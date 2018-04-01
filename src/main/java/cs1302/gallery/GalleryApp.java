@@ -2,32 +2,16 @@ package cs1302.gallery;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.application.Application; 
-import static javafx.application.Application.launch; 
 import javafx.event.EventHandler;
- 
-import javafx.scene.Group; 
 import javafx.scene.Scene; 
 import javafx.scene.input.MouseEvent; 
-import javafx.scene.paint.Color; 
-import javafx.scene.shape.Circle; 
-
-import javafx.scene.text.Font; 
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text; 
 import javafx.stage.Stage; 
-
 import java.io.File;
 import java.util.ArrayList;
-
-import javax.xml.stream.EventFilter;
-
-import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.layout.HBox;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
+
+
 
 public class GalleryApp extends Application 
 {
@@ -105,4 +89,3 @@ public class GalleryApp extends Application
 		} // try
     } // main
 } // GalleryApp
-
