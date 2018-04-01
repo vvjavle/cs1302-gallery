@@ -128,6 +128,7 @@ public class GalleryApp extends Application
 		//Button
 		Button updateImagesButton = new Button("Update Images");
 		hbox.getChildren().add(updateImagesButton);
+		updateImagesButton.setOnAction(e -> System.out.println("Images Updated..."));
 		
 		return topBar;
 	}
