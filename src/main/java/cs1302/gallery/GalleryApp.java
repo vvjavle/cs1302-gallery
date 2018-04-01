@@ -85,27 +85,9 @@ public class GalleryApp extends Application
     		
     		//Button
     		Button slideShowButton = new Button("Play");
-    		slideShowButton.setOnAction
-    		(
-    				new EventHandler<ActionEvent>()
-    				{
-    					public void handle(ActionEvent event)
-    					{
-    						if(isPlaying == true)
-    						{
-    							isPlaying = false;
-    							((Button)event.getSource()).setText("Play");
-    							
-    						}
-    						else
-    						{
-    							isPlaying = true;
-    							((Button)event.getSource()).setText("Pause");
-    							
-    						}
-    					}
-    				}
-    		);
+    		slideShowButton.setOnAction(e -> 
+    						((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play"));
+
     		hbox.getChildren().add(slideShowButton);
 
     		//Label Field
