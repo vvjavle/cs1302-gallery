@@ -14,8 +14,10 @@ import javafx.scene.control.MenuItem;
 import javafx.application.Application; 
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
+
 //Event Handler Imports
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 
 //Layout Pane Imports
@@ -32,91 +34,23 @@ import javafx.scene.control.ProgressBar;
 
 //Miscellaneous Imports
 import javafx.scene.input.MouseEvent; 
-import java.awt.Insets;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.concurrent.TimeUnit;
-
 
 public class GalleryApp extends Application 
 {
 	boolean isPlaying = false;
+	final double windowWidth = 640.0;
+	final double windowHeight = 480.0;
     @Override
     public void start(Stage stage) 
     {
-    		final double windowWidth = 640.0;
-    		final double windowHeight = 480.0;
-//  		final int noOfHorrizontalImages = 5;
-//  		final int noOfVerticalImages = 1;
-//    	
-//    	double imageViewWidth = windowWidth / noOfHorrizontalImages;
-//    	double imageViewHeight = windowHeight  / noOfVerticalImages;
-//    	
-//    	TilePane pane = new TilePane();
-//    	pane.setPrefColumns(noOfVerticalImages);
-//
-//		for(String s : getImageFilesInCurrentFolder())
-//		{
-//    		ImageView iv = new ImageView(new Image("File:" + s));
-//    		iv.setFitHeight(imageViewWidth);
-//    		iv.setFitWidth(imageViewHeight);
-//
-//    		pane.getChildren().add(iv);
-//		}
-//		
-    		VBox topBar = new VBox();
-    		
-    		//File Menu
-    		Menu fileMenu = new Menu("File");
-    		
-    		//Menu Items
-    		MenuItem exit = new MenuItem("Exit");
-    		exit.setOnAction(e -> System.exit(0));
-    		fileMenu.getItems().add(exit);
-    		
-    		//Main Menu Bar
-    		MenuBar mainMenu = new MenuBar();
-    		mainMenu.getMenus().addAll(fileMenu);
-    		topBar.getChildren().add(mainMenu);
-    		
-    		HBox hbox = new HBox(15);
-    		hbox.setAlignment(Pos.CENTER_LEFT);
-
-    		
-    		//Button
-    		Button slideShowButton = new Button("Play");
-    		slideShowButton.setOnAction(e -> 
-    						((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play"));
-
-    		hbox.getChildren().add(slideShowButton);
-
-    		//Label Field
-    		Label searchQueryLabel = new Label("Search Query: ");
-    		hbox.getChildren().add(searchQueryLabel);
-    		
-    		//Text Field
-    		TextField queryInput = new TextField();
-    		hbox.getChildren().add(queryInput);
-    		topBar.getChildren().add(hbox);
-    		
-    		//Button
-    		Button updateImagesButton = new Button("Update Images");
-    		hbox.getChildren().add(updateImagesButton);
 
 		BorderPane borderPane = new BorderPane();
-		borderPane.setTop(topBar);
-		
-		ProgressBar progressBar = new ProgressBar();
-		
-		borderPane.setBottom(progressBar);
-		
-		for(int i = 0;i<=10;i++)
-		{
+		borderPane.setTop(getTopBar());		
+		borderPane.setBottom(getBottomBar());
+		//borderPane.setCenter(getCenter());
 
-				progressBar.setProgress(i*10);
-		}
-		
-		
 		
         Scene scene = new Scene(borderPane, windowWidth, windowHeight);
         stage.setTitle("[XYZ] Gallery!");
@@ -126,7 +60,79 @@ public class GalleryApp extends Application
         stage.show();
     } // start
     
-    private ArrayList<String> getImageFilesInCurrentFolder()
+    private Node getCenter()
+    {
+
+		final int noOfHorrizontalImages = 5;
+		final int noOfVerticalImages = 1;
+		
+		double imageViewWidth = windowWidth / noOfHorrizontalImages;
+		double imageViewHeight = windowHeight  / noOfVerticalImages;
+		
+		TilePane pane = new TilePane();
+		pane.setPrefColumns(noOfVerticalImages);
+	
+		for(String s : getImageFilesInCurrentFolder())
+		{
+			ImageView iv = new ImageView(new Image("File:" + s));
+			iv.setFitHeight(imageViewWidth);
+			iv.setFitWidth(imageViewHeight);
+			pane.getChildren().add(iv);
+		}
+		return pane;
+	}
+
+	private Node getBottomBar()
+    {
+		ProgressBar progressBar = new ProgressBar();
+		return progressBar;
+	}
+
+	private Node getTopBar()
+    {
+		VBox topBar = new VBox();
+		
+		//File Menu
+		Menu fileMenu = new Menu("File");
+		
+		//Menu Items
+		MenuItem exit = new MenuItem("Exit");
+		exit.setOnAction(e -> System.exit(0));
+		fileMenu.getItems().add(exit);
+		
+		//Main Menu Bar
+		MenuBar mainMenu = new MenuBar();
+		mainMenu.getMenus().addAll(fileMenu);
+		topBar.getChildren().add(mainMenu);
+		
+		HBox hbox = new HBox(15);
+		hbox.setAlignment(Pos.CENTER_LEFT);
+
+		
+		//Button
+		Button slideShowButton = new Button("Play");
+		slideShowButton.setOnAction(e -> 
+						((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play"));
+
+		hbox.getChildren().add(slideShowButton);
+
+		//Label Field
+		Label searchQueryLabel = new Label("Search Query: ");
+		hbox.getChildren().add(searchQueryLabel);
+		
+		//Text Field
+		TextField queryInput = new TextField();
+		hbox.getChildren().add(queryInput);
+		topBar.getChildren().add(hbox);
+		
+		//Button
+		Button updateImagesButton = new Button("Update Images");
+		hbox.getChildren().add(updateImagesButton);
+		
+		return topBar;
+	}
+
+	private ArrayList<String> getImageFilesInCurrentFolder()
     {	
     		ArrayList<String> fileList = new ArrayList();
     	
