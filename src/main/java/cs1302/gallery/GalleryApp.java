@@ -13,7 +13,7 @@ import javafx.scene.control.MenuItem;
 //Driver Class Imports
 import javafx.application.Application; 
 import javafx.stage.Stage;
-
+import javafx.event.ActionEvent;
 //Event Handler Imports
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -28,16 +28,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 
 //Miscellaneous Imports
 import javafx.scene.input.MouseEvent; 
 import java.awt.Insets;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 
 public class GalleryApp extends Application 
 {
+	boolean isPlaying = false;
     @Override
     public void start(Stage stage) 
     {
@@ -82,6 +85,27 @@ public class GalleryApp extends Application
     		
     		//Button
     		Button slideShowButton = new Button("Play");
+    		slideShowButton.setOnAction
+    		(
+    				new EventHandler<ActionEvent>()
+    				{
+    					public void handle(ActionEvent event)
+    					{
+    						if(isPlaying == true)
+    						{
+    							isPlaying = false;
+    							((Button)event.getSource()).setText("Play");
+    							
+    						}
+    						else
+    						{
+    							isPlaying = true;
+    							((Button)event.getSource()).setText("Pause");
+    							
+    						}
+    					}
+    				}
+    		);
     		hbox.getChildren().add(slideShowButton);
 
     		//Label Field
@@ -99,6 +123,17 @@ public class GalleryApp extends Application
 
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(topBar);
+		
+		ProgressBar progressBar = new ProgressBar();
+		
+		borderPane.setBottom(progressBar);
+		
+		for(int i = 0;i<=10;i++)
+		{
+
+				progressBar.setProgress(i*10);
+		}
+		
 		
 		
         Scene scene = new Scene(borderPane, windowWidth, windowHeight);
