@@ -12,8 +12,6 @@ import javafx.scene.layout.TilePane;
 import java.awt.Insets;
 import java.io.File;
 import java.util.ArrayList;
-import javafx.scene.layout.HBox;
-
 
 
 public class GalleryApp extends Application 
@@ -23,7 +21,6 @@ public class GalleryApp extends Application
     {
     	final double windowWidth = 640.0;
     	final double windowHeight = 480.0;
-    	
     	final int noOfHorrizontalImages = 3;
     	final int noOfVerticalImages = 3;
     	
@@ -31,12 +28,8 @@ public class GalleryApp extends Application
     	double imageViewHeight = windowHeight  / noOfVerticalImages;
     	
     	TilePane pane = new TilePane();
-    	pane.setVgap(4);
-    	pane.setHgap(4);
-    	pane.setPrefColumns(3);
+    	pane.setPrefColumns(noOfVerticalImages);
 
-		
-		
 		for(String s : getImageFilesInCurrentFolder())
 		{
     		ImageView iv = new ImageView(new Image("File:" + s));
