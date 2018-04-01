@@ -3,6 +3,7 @@ package cs1302.gallery;
 //Image Imports
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.geometry.Pos;
 
 //Menu Imports
 import javafx.scene.control.Menu;
@@ -15,7 +16,7 @@ import javafx.stage.Stage;
 
 //Event Handler Imports
 import javafx.event.EventHandler;
-import javafx.scene.Scene; 
+import javafx.scene.Scene;
 
 //Layout Pane Imports
 import javafx.scene.layout.TilePane;
@@ -25,7 +26,8 @@ import javafx.scene.layout.VBox;
 
 //Control Imports
 import javafx.scene.control.Button;
-
+import javafx.scene.control.TextField;
+import javafx.scene.control.Label;
 
 //Miscellaneous Imports
 import javafx.scene.input.MouseEvent; 
@@ -74,15 +76,30 @@ public class GalleryApp extends Application
     		mainMenu.getMenus().addAll(fileMenu);
     		topBar.getChildren().add(mainMenu);
     		
-    		HBox hbox = new HBox();
+    		HBox hbox = new HBox(15);
+    		hbox.setAlignment(Pos.CENTER_LEFT);
+
     		
     		//Button
-    		hbox.getChildren().add(new Button("Test1"));
-    		hbox.getChildren().add(new Button("Test2"));
+    		Button slideShowButton = new Button("Play");
+    		hbox.getChildren().add(slideShowButton);
+
+    		//Label Field
+    		Label searchQueryLabel = new Label("Search Query: ");
+    		hbox.getChildren().add(searchQueryLabel);
+    		
+    		//Text Field
+    		TextField queryInput = new TextField();
+    		hbox.getChildren().add(queryInput);
     		topBar.getChildren().add(hbox);
     		
+    		//Button
+    		Button updateImagesButton = new Button("Update Images");
+    		hbox.getChildren().add(updateImagesButton);
+
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(topBar);
+		
 		
         Scene scene = new Scene(borderPane, windowWidth, windowHeight);
         stage.setTitle("[XYZ] Gallery!");
