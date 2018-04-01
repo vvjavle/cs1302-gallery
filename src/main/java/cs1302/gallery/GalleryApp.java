@@ -6,7 +6,10 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene; 
 import javafx.scene.input.MouseEvent; 
-import javafx.stage.Stage; 
+import javafx.stage.Stage;
+import javafx.scene.layout.TilePane;
+
+import java.awt.Insets;
 import java.io.File;
 import java.util.ArrayList;
 import javafx.scene.layout.HBox;
@@ -18,16 +21,20 @@ public class GalleryApp extends Application
     @Override
     public void start(Stage stage) 
     {
-    	final double windowWidth = 1020.0;
-    	final double windowHeight = 980.0;
+    	final double windowWidth = 640.0;
+    	final double windowHeight = 480.0;
     	
-    	final int noOfHorrizontalImages = 16;
-    	final int noOfVerticalImages = 16;
+    	final int noOfHorrizontalImages = 3;
+    	final int noOfVerticalImages = 3;
     	
     	double imageViewWidth = windowWidth / noOfHorrizontalImages;
     	double imageViewHeight = windowHeight  / noOfVerticalImages;
     	
-		HBox pane = new HBox();
+    	TilePane pane = new TilePane();
+    	pane.setVgap(4);
+    	pane.setHgap(4);
+    	pane.setPrefColumns(3);
+
 		
 		
 		for(String s : getImageFilesInCurrentFolder())
