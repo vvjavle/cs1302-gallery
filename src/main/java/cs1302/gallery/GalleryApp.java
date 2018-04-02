@@ -164,7 +164,8 @@ public class GalleryApp extends Application
 		
 		String[] parsedResults = new String[numResults];
 		
-		for (int i = 0; i < numResults; i++) {                       
+		for (int i = 0; i < numResults; i++) 
+		{                       
 		    JsonObject result = results.get(i).getAsJsonObject();    // object i in array
 		    JsonElement artworkUrl100 = result.get("artworkUrl100"); // artworkUrl100 member
 		    if (artworkUrl100 != null) {                             // member might not exist
