@@ -33,8 +33,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 //Miscellaneous Imports
-import javafx.scene.input.MouseEvent; 
+import javafx.scene.input.MouseEvent;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class GalleryApp extends Application 
@@ -128,9 +135,46 @@ public class GalleryApp extends Application
 		//Button
 		Button updateImagesButton = new Button("Update Images");
 		hbox.getChildren().add(updateImagesButton);
-		updateImagesButton.setOnAction(e -> System.out.println("Images Updated..."));
+		updateImagesButton.setOnAction(event -> 
+		{ 
+			String searchStrinbgFromTestBox = "";
+			System.out.println(getSearchResults("logic"));
+		});
 		
 		return topBar;
+	}
+	
+	private String getSearchResults(String searchString)
+	{
+		String searchResults = "";
+		try
+		{
+			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&limit=1");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Accept", "application/json");
+
+			if (conn.getResponseCode() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : "
+						+ conn.getResponseCode());
+			}
+
+			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+
+			String output;
+
+			while ((output = br.readLine()) != null) 
+				searchResults += output;
+		}
+		catch(MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		return searchResults;
 	}
 
 	private ArrayList<String> getImageFilesInCurrentFolder()
