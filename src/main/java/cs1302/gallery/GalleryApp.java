@@ -11,7 +11,8 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem; 
 
 //Driver Class Imports
-import javafx.application.Application; 
+import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
@@ -75,8 +76,8 @@ public class GalleryApp extends Application
 		final int noOfHorrizontalImages = 3;
 		final int noOfVerticalImages = 3;
 		
-		double imageViewWidth = windowWidth / noOfHorrizontalImages;
-		double imageViewHeight = windowHeight  / noOfVerticalImages;
+		double imageViewWidth = 100; //windowWidth / noOfHorrizontalImages;
+		double imageViewHeight = 100; //windowHeight  / noOfVerticalImages;
 		
 		TilePane pane = new TilePane();
 		pane.setPrefColumns(noOfVerticalImages);
@@ -139,15 +140,15 @@ public class GalleryApp extends Application
 		{	
 			String searchStrinbgFromTestBox = "";
 
-			String[] artworkURLs = parseResults(getSearchResults("logic"));
-			
-			Node c = getCenter(artworkURLs);
-			
-			
+
 			Button updateImgBtn = (Button)event.getSource();
 
 			HBox hb = (HBox)updateImgBtn.getParent();
+			TextField tf = getTextFieldNode(hb.getChildren());
 			
+			String[] artworkURLs = parseResults(getSearchResults(tf.getText()));
+			
+			Node c = getCenter(artworkURLs);
 			VBox vb = (VBox)hb.getParent();
 			
 			BorderPane bp = (BorderPane)vb.getParent();
@@ -158,6 +159,18 @@ public class GalleryApp extends Application
 		return topBar;
 	}
 	
+	private TextField getTextFieldNode(ObservableList<Node> children)
+	{
+		TextField tfReturned = null;
+		for(Node n : children)
+			if(n instanceof TextField)
+			{
+				tfReturned = (TextField)n;
+				break;
+			}
+		return tfReturned;
+	}
+
 	String[] getParsedResults(String searchString)
 	{
 		return parseResults(getSearchResults(searchString));
