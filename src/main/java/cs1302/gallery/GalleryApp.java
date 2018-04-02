@@ -34,7 +34,6 @@ import javafx.scene.control.ProgressBar;
 
 //Miscellaneous Imports
 import javafx.scene.input.MouseEvent;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +42,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import com.google.gson.*;
 
 public class GalleryApp extends Application 
 {
@@ -137,19 +137,51 @@ public class GalleryApp extends Application
 		hbox.getChildren().add(updateImagesButton);
 		updateImagesButton.setOnAction(event -> 
 		{ 
+			
 			String searchStrinbgFromTestBox = "";
-			System.out.println(getSearchResults("logic"));
+
+
+			
+			String[] artworkURLs = parseResults(getSearchResults("logic"));
+			
+			for(String str : artworkURLs)
+			{
+				System.out.println(str);
+			}
 		});
 		
 		return topBar;
 	}
 	
-	private String getSearchResults(String searchString)
+	private String[] parseResults(BufferedReader reader) 
 	{
-		String searchResults = "";
+		JsonParser jp = new JsonParser();
+		JsonElement je = jp.parse(reader);
+		
+		JsonObject root = je.getAsJsonObject();                      // root of response
+		JsonArray results = root.getAsJsonArray("results");          // "results" array
+		int numResults = results.size();  							// "results" array size
+		
+		String[] parsedResults = new String[numResults];
+		
+		for (int i = 0; i < numResults; i++) {                       
+		    JsonObject result = results.get(i).getAsJsonObject();    // object i in array
+		    JsonElement artworkUrl100 = result.get("artworkUrl100"); // artworkUrl100 member
+		    if (artworkUrl100 != null) {                             // member might not exist
+		         String artUrl = artworkUrl100.getAsString();        // get member as string
+                 parsedResults[i] = artUrl;
+		    } // if
+		} // for
+		
+		return parsedResults;
+	}
+
+	private BufferedReader getSearchResults(String searchString)
+	{
+		BufferedReader br = null;
 		try
 		{
-			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&limit=1");
+			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&limit=20");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
@@ -159,12 +191,9 @@ public class GalleryApp extends Application
 						+ conn.getResponseCode());
 			}
 
-			BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-
-			String output;
-
-			while ((output = br.readLine()) != null) 
-				searchResults += output;
+			 br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+			 
+			 
 		}
 		catch(MalformedURLException e)
 		{
@@ -174,7 +203,8 @@ public class GalleryApp extends Application
 		{
 			e.printStackTrace();
 		}
-		return searchResults;
+		
+		return br;
 	}
 
 	private ArrayList<String> getImageFilesInCurrentFolder()
