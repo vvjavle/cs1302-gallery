@@ -46,6 +46,7 @@ import com.google.gson.*;
 
 public class GalleryApp extends Application 
 {
+	
 	boolean isPlaying = false;
 	final double windowWidth = 640.0;
 	final double windowHeight = 480.0;
@@ -56,6 +57,7 @@ public class GalleryApp extends Application
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(getTopBar());		
 		borderPane.setBottom(getBottomBar());
+		
 		//borderPane.setCenter(getCenter());
 
 		
@@ -67,11 +69,11 @@ public class GalleryApp extends Application
         stage.show();
     } // start
     
-    private Node getCenter()
+    private Node getCenter(String[] imageUrls)
     {
 
-		final int noOfHorrizontalImages = 5;
-		final int noOfVerticalImages = 1;
+		final int noOfHorrizontalImages = 3;
+		final int noOfVerticalImages = 3;
 		
 		double imageViewWidth = windowWidth / noOfHorrizontalImages;
 		double imageViewHeight = windowHeight  / noOfVerticalImages;
@@ -79,9 +81,9 @@ public class GalleryApp extends Application
 		TilePane pane = new TilePane();
 		pane.setPrefColumns(noOfVerticalImages);
 	
-		for(String s : getImageFilesInCurrentFolder())
+		for(String s : imageUrls)
 		{
-			ImageView iv = new ImageView(new Image("File:" + s));
+			ImageView iv = new ImageView(new Image(s));
 			iv.setFitHeight(imageViewWidth);
 			iv.setFitWidth(imageViewHeight);
 			pane.getChildren().add(iv);
@@ -115,11 +117,9 @@ public class GalleryApp extends Application
 		HBox hbox = new HBox(15);
 		hbox.setAlignment(Pos.CENTER_LEFT);
 
-		
 		//Button
 		Button slideShowButton = new Button("Play");
-		slideShowButton.setOnAction(e -> 
-						((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play"));
+		slideShowButton.setOnAction(e -> ((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play"));
 
 		hbox.getChildren().add(slideShowButton);
 
@@ -136,21 +136,31 @@ public class GalleryApp extends Application
 		Button updateImagesButton = new Button("Update Images");
 		hbox.getChildren().add(updateImagesButton);
 		updateImagesButton.setOnAction(event -> 
-		{ 
-			
+		{	
 			String searchStrinbgFromTestBox = "";
 
-
-			
 			String[] artworkURLs = parseResults(getSearchResults("logic"));
 			
-			for(String str : artworkURLs)
-			{
-				System.out.println(str);
-			}
+			Node c = getCenter(artworkURLs);
+			
+			
+			Button updateImgBtn = (Button)event.getSource();
+
+			HBox hb = (HBox)updateImgBtn.getParent();
+			
+			VBox vb = (VBox)hb.getParent();
+			
+			BorderPane bp = (BorderPane)vb.getParent();
+			bp.setCenter(c);
+
 		});
 		
 		return topBar;
+	}
+	
+	String[] getParsedResults(String searchString)
+	{
+		return parseResults(getSearchResults(searchString));
 	}
 	
 	private String[] parseResults(BufferedReader reader) 
@@ -168,7 +178,8 @@ public class GalleryApp extends Application
 		{                       
 		    JsonObject result = results.get(i).getAsJsonObject();    // object i in array
 		    JsonElement artworkUrl100 = result.get("artworkUrl100"); // artworkUrl100 member
-		    if (artworkUrl100 != null) {                             // member might not exist
+		    if (artworkUrl100 != null) 
+		    {                             							// member might not exist
 		         String artUrl = artworkUrl100.getAsString();        // get member as string
                  parsedResults[i] = artUrl;
 		    } // if
@@ -187,19 +198,19 @@ public class GalleryApp extends Application
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");
 
-			if (conn.getResponseCode() != 200) {
-				throw new RuntimeException("Failed : HTTP error code : "
-						+ conn.getResponseCode());
+			if (conn.getResponseCode() != 200) 
+			{
+				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
 			}
 
 			 br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-			 
-			 
 		}
+		
 		catch(MalformedURLException e)
 		{
 			e.printStackTrace();
 		}
+		
 		catch(IOException e)
 		{
 			e.printStackTrace();
