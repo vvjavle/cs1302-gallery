@@ -49,7 +49,7 @@ public class GalleryApp extends Application
 {
 	
 	boolean isPlaying = false;
-	final double windowWidth = 640.0;
+	final double windowWidth = 500.0;
 	final double windowHeight = 480.0;
     @Override
     public void start(Stage stage) 
@@ -66,7 +66,7 @@ public class GalleryApp extends Application
         stage.setTitle("[XYZ] Gallery!");
         stage.setScene(scene);
         //stage.sizeToScene();
-        //stage.setResizable(false);
+        stage.setResizable(false);
         stage.show();
     } // start
     
@@ -206,6 +206,9 @@ public class GalleryApp extends Application
 		BufferedReader br = null;
 		try
 		{
+			if(searchString != null)
+				searchString = searchString.replaceAll(" ", "+");
+			
 			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&limit=20");
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
