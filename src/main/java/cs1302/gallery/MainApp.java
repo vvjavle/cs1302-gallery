@@ -50,7 +50,7 @@ public class MainApp extends Application
     @Override
     public void start(Stage stage) 
     {
-
+/*
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(getTopBar());     
         borderPane.setBottom(getBottomBar());
@@ -60,6 +60,7 @@ public class MainApp extends Application
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
+*/
     } // start
     
     private Node getCenter(String[] imageUrls)
@@ -221,7 +222,7 @@ public class MainApp extends Application
         
         return br;
     }
-
+/*
     public static void main(String[] args) 
     {
         try 
@@ -237,4 +238,5 @@ public class MainApp extends Application
             System.exit(1);
         } // try
     } // main
+*/
 } // MainApp
