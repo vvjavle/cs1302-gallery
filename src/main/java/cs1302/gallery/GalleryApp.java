@@ -14,18 +14,16 @@ import javafx.scene.control.MenuItem;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
-import javafx.event.ActionEvent;
+
 
 //Event Handler Imports
-import javafx.event.EventHandler;
+
 import javafx.scene.Node;
 import javafx.scene.Scene;
 
 //Layout Pane Imports
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+
 
 //Control Imports
 import javafx.scene.control.Button;
@@ -34,15 +32,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 //Miscellaneous Imports
-import javafx.scene.input.MouseEvent;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+
 import com.google.gson.*;
 
 public class GalleryApp extends Application 
@@ -58,22 +54,16 @@ public class GalleryApp extends Application
 		BorderPane borderPane = new BorderPane();
 		borderPane.setTop(getTopBar());		
 		borderPane.setBottom(getBottomBar());
-		
-		//borderPane.setCenter(getCenter());
 
-		
         Scene scene = new Scene(borderPane, windowWidth, windowHeight);
         stage.setTitle("[XYZ] Gallery!");
         stage.setScene(scene);
-        //stage.sizeToScene();
         stage.setResizable(false);
         stage.show();
     } // start
     
     private Node getCenter(String[] imageUrls)
     {
-
-		final int noOfHorrizontalImages = 3;
 		final int noOfVerticalImages = 3;
 		
 		double imageViewWidth = 100; //windowWidth / noOfHorrizontalImages;
@@ -138,9 +128,6 @@ public class GalleryApp extends Application
 		hbox.getChildren().add(updateImagesButton);
 		updateImagesButton.setOnAction(event -> 
 		{	
-			String searchStrinbgFromTestBox = "";
-
-
 			Button updateImgBtn = (Button)event.getSource();
 
 			HBox hb = (HBox)updateImgBtn.getParent();
@@ -234,17 +221,6 @@ public class GalleryApp extends Application
 		
 		return br;
 	}
-
-	private ArrayList<String> getImageFilesInCurrentFolder()
-    {	
-    		ArrayList<String> fileList = new ArrayList();
-    	
-    		for(File file : new File(".").listFiles((dir, name) -> {return name.toLowerCase().endsWith(".jpg");}))
-    			if(file.isFile())
-    				fileList.add(file.getName());
-    	
-    		return fileList;
-    }
 
 	public static void main(String[] args) 
     {
