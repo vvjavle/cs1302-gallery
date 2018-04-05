@@ -37,8 +37,8 @@
                <children>
                   <Button fx:id="playbackButton" mnemonicParsing="false" onAction="#playButtonActionHandler" prefHeight="31.0" prefWidth="50.0" text="Play" />
                   <Label prefHeight="31.0" prefWidth="92.0" text="Search Query:" />
-                  <TextField prefHeight="31.0" />
-                  <Button mnemonicParsing="false" prefHeight="31.0" text="Update Images" />
+                  <TextField fx:id="searchTextFIeld" prefHeight="31.0" />
+                  <Button mnemonicParsing="false" onAction="#updateImagesButtonHandler" prefHeight="31.0" text="Update Images" />
                </children>
             </HBox>
          </children>
