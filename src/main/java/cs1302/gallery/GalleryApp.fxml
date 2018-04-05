@@ -35,7 +35,7 @@
             </MenuBar>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#playButtonActionHandler" prefHeight="31.0" prefWidth="50.0" text="Play" />
+                  <Button fx:id="playbackButton" mnemonicParsing="false" onAction="#playButtonActionHandler" prefHeight="31.0" prefWidth="50.0" text="Play" />
                   <Label prefHeight="31.0" prefWidth="92.0" text="Search Query:" />
                   <TextField prefHeight="31.0" />
                   <Button mnemonicParsing="false" prefHeight="31.0" text="Update Images" />

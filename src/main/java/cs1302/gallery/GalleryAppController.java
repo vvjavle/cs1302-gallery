@@ -1,22 +1,19 @@
 package cs1302.gallery;
 
-import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
-public class GalleryAppController extends Application 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+
+public class GalleryAppController  
 {
     boolean isPlaying = false;
+    
+    public Button playbackButton;
+    
+    @FXML
     public void playButtonActionHandler(ActionEvent e)
     {
-        ((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play");
-    }
-
-    @Override
-    public void start(Stage arg0) throws Exception
-    {
-        // TODO Auto-generated method stub
-        
+        playbackButton.setText((isPlaying = !isPlaying) ? "Pause" : "Play");
     }
 }
