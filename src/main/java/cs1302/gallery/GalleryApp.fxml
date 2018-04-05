@@ -8,7 +8,10 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 
@@ -32,7 +35,7 @@
             </MenuBar>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#playButtonActionHandler" prefHeight="31.0" text="Play" />
+                  <Button mnemonicParsing="false" onAction="#playButtonActionHandler" prefHeight="31.0" prefWidth="50.0" text="Play" />
                   <Label prefHeight="31.0" prefWidth="92.0" text="Search Query:" />
                   <TextField prefHeight="31.0" />
                   <Button mnemonicParsing="false" prefHeight="31.0" text="Update Images" />
@@ -42,10 +45,27 @@
       </VBox>
    </top>
    <center>
-      <TilePane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <TilePane prefHeight="384.0" prefWidth="480.0" BorderPane.alignment="CENTER">
+         <children>
+            <GridPane>
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+            </GridPane>
+         </children></TilePane>
    </center>
    <bottom>
       <ProgressBar prefWidth="200.0" progress="0.0" BorderPane.alignment="CENTER" />
    </bottom>
-
 </BorderPane>
