@@ -44,25 +44,44 @@ public class GalleryAppController
 		SearchButton updateImgBtn = (SearchButton) e.getSource();
 		
 		if(updateImgBtn != null)
-		{
-			String textFieldText = updateImgBtn.textField.getText();
-			String[] artworkURLs = parseResults(getSearchResults(textFieldText));
-			
-			TilePane tilePane = new TilePane();
-			
-			for(String s: artworkURLs)
-			{
-				System.out.println(s);
-				ImageView imageView = new ImageView(new Image(s));
-				imageView.setFitWidth(100);
-				imageView.setFitHeight(100);
-				tilePane.getChildren().add(imageView);
-			}		
-			updateImgBtn.parentBorderPane.setCenter(tilePane);
-		}
+			updateImgBtn.parentBorderPane.setCenter
+			(
+					getUpdatedTilePane(updateImgBtn.textField.getText())
+			);
 	}
 
 	
+	public TilePane getUpdatedTilePane(String textFieldText)
+	{
+		TilePane tilePane = new TilePane();
+		
+		String[] urls = parseResults(getSearchResults(textFieldText));
+		
+//		for(String s: urls)
+//		{
+//			ImageView imageView = new ImageView(new Image(s));
+//			imageView.setFitWidth(100);
+//			imageView.setFitHeight(100);
+//			tilePane.getChildren().add(imageView);
+//			
+//			System.out.println(s);
+//		}
+		
+		for(int i = 0; i < 20; i++)
+		{
+			ImageView imageView = new ImageView(new Image(urls[i]));
+			imageView.setFitWidth(100);
+			imageView.setFitHeight(100);
+			tilePane.getChildren().add(imageView);
+			
+			System.out.println(urls[i]);
+		}
+		
+		System.out.println("LENGTH:" + urls.length);
+		
+		return tilePane;
+	}
+
 	private String[] parseResults(BufferedReader reader) 
 	{
 		JsonParser jp = new JsonParser();
@@ -96,7 +115,7 @@ public class GalleryAppController
 			if(searchString != null)
 				searchString = searchString.replaceAll(" ", "+");
 			
-			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&limit=20");
+			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&entity=album" /*+ "&limit=20"*/);
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			conn.setRequestProperty("Accept", "application/json");

@@ -14,6 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.ToolBar;
 
 public class GalleryAppView extends BorderPane
 {
@@ -40,11 +41,13 @@ public class GalleryAppView extends BorderPane
 		HBox hbox = new HBox(15);
 		hbox.setAlignment(Pos.CENTER_LEFT);
 		
+		MenuBar toolBar = new MenuBar();
+		
 		//Button
 		Button slideShowButton = new Button("Play");
 		slideShowButton.setOnAction(e -> galleyAppController.slideShowEventHandler(e));
 		hbox.getChildren().add(slideShowButton);
-
+		
 		//Label Field
 		Label searchQueryLabel = new Label("Search Query: ");
 		hbox.getChildren().add(searchQueryLabel);
@@ -54,9 +57,10 @@ public class GalleryAppView extends BorderPane
 		hbox.getChildren().add(queryInput);
 		
 		//Button
-		SearchButton updateImagesButton = new SearchButton("Update Images",this,queryInput);
+		SearchButton updateImagesButton = new SearchButton("Update Images", this ,queryInput);
 		updateImagesButton.setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));
 		hbox.getChildren().add(updateImagesButton);
+		
 		return hbox;
 	}
 
@@ -79,8 +83,7 @@ public class GalleryAppView extends BorderPane
 	
 	public void buildCenter()
 	{	
-		TilePane pane = new TilePane();
-		setCenter(pane);
+		setCenter(galleyAppController.getUpdatedTilePane("xxxtentacion"));
 	}
 	
 	private void buildBottom()

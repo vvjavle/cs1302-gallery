@@ -34,7 +34,6 @@ import com.google.gson.*;
 
 public class GalleryApp extends Application 
 {
-	
 	final double windowWidth = 500.0;
 	final double windowHeight = 480.0;
 	
@@ -47,8 +46,7 @@ public class GalleryApp extends Application
         stage.setScene(scene);
         stage.setResizable(false);
         stage.show();
-    } // start
-    
+    }
 
 	public static void main(String[] args) 
     {
