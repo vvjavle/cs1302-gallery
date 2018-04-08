@@ -58,7 +58,7 @@ public class GalleryAppController
 		
 		progressBar.setProgress(0);
 		
-		String[] urls = parseResults(getSearchResults2(textFieldText));	
+		String[] urls = parseResults(getSearchResults(textFieldText));	
 		
 		for(int i = 0, j = 0; i < urls.length; i++,j=j+5)
 		{
@@ -103,42 +103,8 @@ public class GalleryAppController
 		
 		return parsedResults;
 	}
-
-	private BufferedReader getSearchResults(String searchString)
-	{
-		BufferedReader br = null;
-		try
-		{
-			if(searchString != null)
-				searchString = searchString.replaceAll(" ", "+");
-			
-			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&entity=album" /*+ "&limit=20"*/);
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			conn.setRequestMethod("GET");
-			conn.setRequestProperty("Accept", "application/json");
-
-			if (conn.getResponseCode() != 200) 
-			{
-				throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
-			}
-
-			br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-		}
-		
-		catch(MalformedURLException e)
-		{
-			e.printStackTrace();
-		}
-		
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
-		return br;
-	}
 	
-	private InputStreamReader getSearchResults2(String searchString)
+	private InputStreamReader getSearchResults(String searchString)
 	{
 		InputStreamReader reader = null;
 		
@@ -166,6 +132,6 @@ public class GalleryAppController
 	
 	private String[] getParsedResults(String searchString)
 	{
-		return parseResults(getSearchResults2(searchString));
+		return parseResults(getSearchResults(searchString));
 	}
 }
