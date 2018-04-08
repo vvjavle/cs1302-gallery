@@ -27,9 +27,19 @@ import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import javafx.stage.Stage;
+import javafx.stage.Modality;
+
+import javafx.scene.control.Label;
+
+import javafx.scene.Scene;
+import javafx.geometry.Pos;
+
 public class GalleryAppController
 {
 	boolean isPlaying = false;
+	TilePane tilePane;
+	
 	public void exitMenuHandler(ActionEvent e)
 	{
 		System.exit(0);
@@ -51,35 +61,44 @@ public class GalleryAppController
 			);
 	}
 
-	
 	public TilePane getUpdatedTilePane(String textFieldText, ProgressBar progressBar)
 	{
-		TilePane tilePane = new TilePane();
+		//this.tilePane = new TilePane();
 		
 		progressBar.setProgress(0);
 		
-		String[] urls = parseResults(getSearchResults(textFieldText));	
+		String[] urls = parseResults(getSearchResults(textFieldText));
 		
-		for(int i = 0, j = 0; i < urls.length; i++,j=j+5)
+		if(urls.length < 20)
 		{
-			if(urls[i] != null && i < 20)
-			{
-				ImageView imageView = new ImageView(new Image(urls[i]));
-				imageView.setFitWidth(100);
-				imageView.setFitHeight(100);
-				tilePane.getChildren().add(imageView);
-				progressBar.setProgress(j);
-					
-				System.out.println(urls[i]);
-			}
+			displayPopUp();
+			return tilePane;
 		}
 		
-		System.out.println("LENGTH:" + urls.length);
-		
-		return tilePane;
+		else {
+			this.tilePane = new TilePane();
+			
+			for(int i = 0, j = 0; i < urls.length; i++,j=j+5)
+			{
+				if(urls[i] != null && i < 20)
+				{
+					ImageView imageView = new ImageView(new Image(urls[i]));
+					imageView.setFitWidth(100);
+					imageView.setFitHeight(100);
+					tilePane.getChildren().add(imageView);
+					progressBar.setProgress(j);
+						
+					System.out.println(urls[i]);
+				}
+			}
+			
+			System.out.println("LENGTH:" + urls.length);
+			
+			return tilePane;
+		}
 	}
 
-	private String[] parseResults(/*BufferedReader*/ InputStreamReader reader) 
+	private String[] parseResults(InputStreamReader reader) 
 	{
 		JsonParser jp = new JsonParser();
 		JsonElement je = jp.parse(reader);
@@ -102,6 +121,34 @@ public class GalleryAppController
 		} // for
 		
 		return parsedResults;
+	}
+	
+	public static void displayPopUp()
+	{
+		Stage window = new Stage();
+		
+		window.initModality(Modality.APPLICATION_MODAL);
+		window.setTitle("Error");
+		window.setWidth(300);
+		window.setHeight(150);
+		
+		Label errorMessage = new Label();
+		errorMessage.setText("Error: The search yields less than 20 results");
+		
+		Label instructionMessage = new Label();
+		instructionMessage.setText("Enter a new search");
+		
+		Button closeButton = new Button("Close");
+		closeButton.setOnAction(e -> window.close());
+		
+		VBox vb = new VBox();
+		vb.getChildren().addAll(errorMessage, instructionMessage, closeButton);
+		vb.setAlignment(Pos.CENTER);
+		
+		Scene scene = new Scene(vb);
+		window.setScene(scene);
+		window.setResizable(false);
+		window.showAndWait();
 	}
 	
 	private InputStreamReader getSearchResults(String searchString)
