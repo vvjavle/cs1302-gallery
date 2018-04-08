@@ -19,13 +19,14 @@ import javafx.scene.control.ToolBar;
 public class GalleryAppView extends BorderPane
 {
 	GalleryAppController galleyAppController;
+	ProgressBar progressBar = new ProgressBar();
 
 	public GalleryAppView(GalleryAppController galleryAppController)
 	{
 		this.galleyAppController = galleryAppController;
 		buildTop();
-		buildCenter();
 		buildBottom();
+		buildCenter();
 	}
 	
 	public void buildTop()
@@ -57,7 +58,7 @@ public class GalleryAppView extends BorderPane
 		hbox.getChildren().add(queryInput);
 		
 		//Button
-		SearchButton updateImagesButton = new SearchButton("Update Images", this ,queryInput);
+		SearchButton updateImagesButton = new SearchButton("Update Images", this ,queryInput,progressBar);
 		updateImagesButton.setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));
 		hbox.getChildren().add(updateImagesButton);
 		
@@ -83,13 +84,11 @@ public class GalleryAppView extends BorderPane
 	
 	public void buildCenter()
 	{	
-		setCenter(galleyAppController.getUpdatedTilePane("xxxtentacion"));
+		setCenter(galleyAppController.getUpdatedTilePane("drake", progressBar));
 	}
 	
 	private void buildBottom()
-    {
-		ProgressBar progressBar = new ProgressBar();
-		
+    {		
 		setBottom(progressBar);
 	}
 }

@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.control.ProgressBar;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -46,35 +47,31 @@ public class GalleryAppController
 		if(updateImgBtn != null)
 			updateImgBtn.parentBorderPane.setCenter
 			(
-					getUpdatedTilePane(updateImgBtn.textField.getText())
+					getUpdatedTilePane(updateImgBtn.textField.getText(), updateImgBtn.progressBar)
 			);
 	}
 
 	
-	public TilePane getUpdatedTilePane(String textFieldText)
+	public TilePane getUpdatedTilePane(String textFieldText, ProgressBar progressBar)
 	{
 		TilePane tilePane = new TilePane();
 		
-		String[] urls = parseResults(getSearchResults(textFieldText));
+		progressBar.setProgress(0);
 		
-//		for(String s: urls)
-//		{
-//			ImageView imageView = new ImageView(new Image(s));
-//			imageView.setFitWidth(100);
-//			imageView.setFitHeight(100);
-//			tilePane.getChildren().add(imageView);
-//			
-//			System.out.println(s);
-//		}
+		String[] urls = parseResults(getSearchResults2(textFieldText));	
 		
-		for(int i = 0; i < 20; i++)
+		for(int i = 0, j = 0; i < urls.length; i++,j=j+5)
 		{
-			ImageView imageView = new ImageView(new Image(urls[i]));
-			imageView.setFitWidth(100);
-			imageView.setFitHeight(100);
-			tilePane.getChildren().add(imageView);
-			
-			System.out.println(urls[i]);
+			if(urls[i] != null && i < 20)
+			{
+				ImageView imageView = new ImageView(new Image(urls[i]));
+				imageView.setFitWidth(100);
+				imageView.setFitHeight(100);
+				tilePane.getChildren().add(imageView);
+				progressBar.setProgress(j);
+					
+				System.out.println(urls[i]);
+			}
 		}
 		
 		System.out.println("LENGTH:" + urls.length);
@@ -82,7 +79,7 @@ public class GalleryAppController
 		return tilePane;
 	}
 
-	private String[] parseResults(BufferedReader reader) 
+	private String[] parseResults(/*BufferedReader*/ InputStreamReader reader) 
 	{
 		JsonParser jp = new JsonParser();
 		JsonElement je = jp.parse(reader);
@@ -141,10 +138,34 @@ public class GalleryAppController
 		return br;
 	}
 	
+	private InputStreamReader getSearchResults2(String searchString)
+	{
+		InputStreamReader reader = null;
+		
+		try
+		{
+			if(searchString != null)
+				searchString = searchString.replaceAll(" ", "+");
+			
+			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&entity=album" /*+ "&limit=20"*/);
+			reader = new InputStreamReader(url.openStream());
+		}
+		
+		catch(MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+		
+		catch(IOException e)
+		{
+			e.printStackTrace();
+		}
+		
+		return reader;
+	}
+	
 	private String[] getParsedResults(String searchString)
 	{
-		return parseResults(getSearchResults(searchString));
+		return parseResults(getSearchResults2(searchString));
 	}
-
-
 }
