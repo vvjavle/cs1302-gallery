@@ -41,8 +41,6 @@ public class GalleryAppController
 	
 	public void updateImagesButtonHandler(ActionEvent e)
 	{
-
-
 		SearchButton updateImgBtn = (SearchButton) e.getSource();
 		
 		if(updateImgBtn != null)
@@ -123,19 +121,8 @@ public class GalleryAppController
 		
 		return br;
 	}
-
-	private ArrayList<String> getImageFilesInCurrentFolder()
-    {	
-    		ArrayList<String> fileList = new ArrayList();
-    	
-    		for(File file : new File(".").listFiles((dir, name) -> {return name.toLowerCase().endsWith(".jpg");}))
-    			if(file.isFile())
-    				fileList.add(file.getName());
-    	
-    		return fileList;
-    }
 	
-	String[] getParsedResults(String searchString)
+	private String[] getParsedResults(String searchString)
 	{
 		return parseResults(getSearchResults(searchString));
 	}
