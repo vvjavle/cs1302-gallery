@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
@@ -16,6 +17,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
@@ -28,6 +31,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.stage.Modality;
 
 import javafx.scene.control.Label;
@@ -39,6 +43,22 @@ public class GalleryAppController
 {
 	boolean isPlaying = false;
 	TilePane tilePane;
+	
+	public void keyFrameHandler(ActionEvent e)
+	{
+		if(isPlaying)
+			System.out.println(LocalTime.now());
+	}
+	public GalleryAppController()
+	{
+
+		KeyFrame keyFrame = new KeyFrame(Duration.seconds(2), e -> keyFrameHandler(e));
+		Timeline timeline = new Timeline();
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.getKeyFrames().add(keyFrame);
+		timeline.play();
+	}
+	
 	
 	public void exitMenuHandler(ActionEvent e)
 	{
