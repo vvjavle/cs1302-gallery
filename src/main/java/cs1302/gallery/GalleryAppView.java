@@ -48,21 +48,20 @@ public class GalleryAppView extends BorderPane
 
 	private Node getToolBar() 
 	{
-		HBox hbox = new HBox(15);
-		hbox.setAlignment(Pos.CENTER_LEFT);
-		
-		//Button
-		hbox.getChildren().add(new Button("Play"){{setOnAction(e -> galleyAppController.slideShowEventHandler(e));}});
-		hbox.getChildren().add(new Label("Search Query: "));
-		
-		//Text Field
-		TextField queryInput = new TextField();
-		hbox.getChildren().add(queryInput);
-		
-		//Button
-		hbox.getChildren().add(new SearchButton("Update Images", this ,queryInput) {{setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));}});
-		
-		return hbox;
+	    TextField queryInput = new TextField();
+	    SearchButton searchButton = new SearchButton("Update Images", this ,queryInput) {{setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));}};
+	    
+		return new HBox(15)
+		        {{
+		            setAlignment(Pos.CENTER_LEFT);
+		            getChildren().addAll
+		            (
+	                    new Button("Play"){{setOnAction(e -> galleyAppController.slideShowEventHandler(e));}},
+	                    new Label("Search Query: "),
+	                    queryInput,
+	                    searchButton
+		            );
+		        }};
 	}
 
 	private MenuBar getMenuBar()
