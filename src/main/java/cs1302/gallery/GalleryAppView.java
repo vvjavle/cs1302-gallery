@@ -43,10 +43,7 @@ public class GalleryAppView extends BorderPane
 	
 	public void buildTop()
     {
-		VBox topBar = new VBox();
-		topBar.getChildren().add(getMenuBar());
-		topBar.getChildren().add(getToolBar());
-		setTop(topBar);
+		setTop(new VBox() {{getChildren().addAll(getMenuBar(),getToolBar());}});
 	}
 
 	private Node getToolBar() 

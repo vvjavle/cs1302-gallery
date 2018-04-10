@@ -95,7 +95,7 @@ public class GalleryAppController
 		
 		if(updateImgBtn != null)
 		{
-		    parseResults(getQueryResults(updateImgBtn.textField.getText()));
+		    updateSearchResultsModel(updateImgBtn.textField.getText());
 	        if(galleryAppModel.getUrlList().size() < PANEMAXELEMENTS) displayPopUp();
 		}
 	}
