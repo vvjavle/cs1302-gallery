@@ -1,4 +1,6 @@
 package cs1302.gallery;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -27,6 +29,21 @@ public class GalleryAppView extends BorderPane
 		buildTop();
 		buildBottom();
 		buildCenter();
+		
+		this.galleyAppController.getGalleryAppModel().urlListProperty().addListener(new ChangeListener() 
+		{
+
+            @Override
+            public void changed(ObservableValue arg0, Object arg1, Object arg2)
+            {
+//                galleyAppController.getSearchResults("drake");
+//                if(galleyAppController.getSearchResultLength() < 20) galleyAppController.displayPopUp();
+                setCenter(galleyAppController.getUpdatedTilePane());
+                
+                System.out.println("ImageList changed");
+                
+            } 
+		});
 	}
 	
 	public void buildTop()
@@ -82,7 +99,9 @@ public class GalleryAppView extends BorderPane
 	
 	public void buildCenter()
 	{	
-		setCenter(galleyAppController.getUpdatedTilePane("drake", progressBar));
+        galleyAppController.getSearchResults("drake");
+        if(galleyAppController.getSearchResultLength() < 20) galleyAppController.displayPopUp();
+        setCenter(galleyAppController.getUpdatedTilePane());
 	}
 	
 	private void buildBottom()

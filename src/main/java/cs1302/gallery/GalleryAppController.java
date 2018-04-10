@@ -5,14 +5,17 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Random;
+
 import javafx.scene.layout.TilePane;
-import javafx.scene.control.ProgressBar;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
@@ -29,11 +32,34 @@ public class GalleryAppController
 {
 	boolean isPlaying = false;
 	TilePane tilePane;
+	//String[] urls = null;
+	
+	GalleryAppModel galleryAppModel = new GalleryAppModel();
+	
+	public GalleryAppModel getGalleryAppModel()
+	{
+	    return galleryAppModel;
+	}
+	
+	public int getSearchResultLength()
+	{
+	    return galleryAppModel.getUrlList().size();
+	}
 	
 	public void keyFrameHandler(ActionEvent e)
 	{
 		if(isPlaying)
+		{
 			System.out.println(LocalTime.now());
+			
+			Random rand = new Random();
+
+	        // Generate random integers in range 0 to 999
+	        int rand_int1 = rand.nextInt(20);
+	        
+	        System.out.println(rand_int1);
+	        galleryAppModel.getUrlList().set(rand_int1, "http://1millionlovemessages.com/wp-content/uploads/2013/12/Today%E2%80%99s-Love-Quote-21.jpg");
+		}
 	}
 	public GalleryAppController()
 	{
@@ -61,47 +87,30 @@ public class GalleryAppController
 		SearchButton updateImgBtn = (SearchButton) e.getSource();
 		
 		if(updateImgBtn != null)
-			updateImgBtn.parentBorderPane.setCenter
-			(
-					getUpdatedTilePane(updateImgBtn.textField.getText(), updateImgBtn.progressBar)
-			);
+		{
+	        getSearchResults(updateImgBtn.textField.getText());
+	        if(galleryAppModel.getUrlList().size() < 20) displayPopUp();
+	        //updateImgBtn.parentBorderPane.setCenter(getUpdatedTilePane());
+		}
 	}
 
-	public TilePane getUpdatedTilePane(String textFieldText, ProgressBar progressBar)
+	public TilePane getUpdatedTilePane()
 	{
-		//this.tilePane = new TilePane();
-		
-		progressBar.setProgress(0);
-		
-		String[] urls = parseResults(getSearchResults(textFieldText));
-		
-		if(urls.length < 20)
-		{
-			displayPopUp();
-			return tilePane;
-		}
-		
-		else {
-			this.tilePane = new TilePane();
-			
-			for(int i = 0, j = 0; i < urls.length; i++,j=j+5)
-			{
-				if(urls[i] != null && i < 20)
-				{
-					ImageView imageView = new ImageView(new Image(urls[i]));
-					imageView.setFitWidth(100);
-					imageView.setFitHeight(100);
-					tilePane.getChildren().add(imageView);
-					progressBar.setProgress(j);
-						
-					System.out.println(urls[i]);
-				}
-			}
-			
-			System.out.println("LENGTH:" + urls.length);
-			
-			return tilePane;
-		}
+        TilePane tilePane = new TilePane();
+        
+        for(int i = 0; i < galleryAppModel.getUrlList().size(); i++)
+        	if(galleryAppModel.getUrlList().get(i) != null && i < 20)
+        		tilePane.getChildren().add
+        		(
+        		        new ImageView(new Image(galleryAppModel.getUrlList().get(i)))
+        		        {
+        		            {
+        		                setFitWidth(100);
+        		                setFitHeight(100);
+        		            }
+        		        }
+        		);
+        return tilePane;
 	}
 
 	private String[] parseResults(InputStreamReader reader) 
@@ -131,33 +140,45 @@ public class GalleryAppController
 	
 	public static void displayPopUp()
 	{
-		Stage window = new Stage();
-		
-		window.initModality(Modality.APPLICATION_MODAL);
-		window.setTitle("Error");
-		window.setWidth(300);
-		window.setHeight(150);
-		
-		Label errorMessage = new Label();
-		errorMessage.setText("Error: The search yields less than 20 results");
-		
-		Label instructionMessage = new Label();
-		instructionMessage.setText("Enter a new search");
-		
-		Button closeButton = new Button("Close");
-		closeButton.setOnAction(e -> window.close());
-		
-		VBox vb = new VBox();
-		vb.getChildren().addAll(errorMessage, instructionMessage, closeButton);
-		vb.setAlignment(Pos.CENTER);
-		
-		Scene scene = new Scene(vb);
-		window.setScene(scene);
-		window.setResizable(false);
+
+        Stage window = new Stage()
+        		        {
+                		    {
+                		        initModality(Modality.APPLICATION_MODAL);
+                		        setTitle("Error");
+                		        setWidth(300);
+                		        setHeight(150);
+                		        setResizable(false);
+                		    }
+        		        };
+
+        window.setScene
+        (
+                new Scene
+                (
+                        new VBox()
+                        {
+                            {
+                                getChildren().addAll
+                                (
+                                        new Label("Error: The search yields less than 20 results"),
+                                        new Label("Enter a new search"),
+                                        new Button("Close")
+                                        {
+                                            {
+                                                setOnAction(e -> window.close());
+                                            }
+                                        }
+                                );
+                                setAlignment(Pos.CENTER);
+                            }
+                        } 
+                )
+        );
 		window.showAndWait();
 	}
 	
-	private InputStreamReader getSearchResults(String searchString)
+	private InputStreamReader getQueryResults(String searchString)
 	{
 		InputStreamReader reader = null;
 		
@@ -182,9 +203,21 @@ public class GalleryAppController
 		
 		return reader;
 	}
-	
-	private String[] getParsedResults(String searchString)
-	{
-		return parseResults(getSearchResults(searchString));
-	}
+    public void buildBorderPaneCenter(String string)
+    {
+
+        
+    }
+    public void getSearchResults(String searchQuery)
+    {
+        List<String> o = galleryAppModel.getUrlList();
+        if(o != null)
+        {
+            o.clear();
+            for (String s : parseResults(getQueryResults(searchQuery)))
+                    o.add(s);
+ 
+        }
+        
+    }
 }
