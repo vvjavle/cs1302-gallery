@@ -1,36 +1,8 @@
 package cs1302.gallery;
 
-//Image Imports
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-
-//Layout Pane Imports
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-//Control Imports
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-
-//Miscellaneous Imports
-import javafx.scene.input.MouseEvent;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import com.google.gson.*;
 
 public class GalleryApp extends Application 
 {

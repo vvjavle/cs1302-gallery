@@ -42,8 +42,6 @@ public class GalleryAppView extends BorderPane
 		HBox hbox = new HBox(15);
 		hbox.setAlignment(Pos.CENTER_LEFT);
 		
-		MenuBar toolBar = new MenuBar();
-		
 		//Button
 		Button slideShowButton = new Button("Play");
 		slideShowButton.setOnAction(e -> galleyAppController.slideShowEventHandler(e));
