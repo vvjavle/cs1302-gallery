@@ -30,9 +30,11 @@ public class GalleryAppView extends BorderPane
 		(
     		    new ChangeListener() 
         		{
+    		        int i = 0;
                     @Override
                     public void changed(ObservableValue arg0, Object arg1, Object arg2)
                     {
+                        //System.out.println(i++ + ":" + arg0.getClass().toString() + "," + arg1.getClass().toString() + "," + arg2.getClass().toString());
                         setCenter(galleyAppController.getUpdatedTilePane());
                     } 
         		}	    
@@ -68,8 +70,7 @@ public class GalleryAppView extends BorderPane
 
 	private MenuBar getMenuBar()
 	{
-		//Main Menu Bar
-		return new MenuBar()
+		return new MenuBar() //Main Menu Bar
 		{{
 		    getMenus().addAll(new Menu("File"){{getItems().add(new MenuItem("Exit") {{setOnAction (e -> galleyAppController.exitMenuHandler(e));}});}});
 		}};
@@ -77,7 +78,7 @@ public class GalleryAppView extends BorderPane
 	
 	public void buildCenter()
 	{	
-        galleyAppController.getSearchResults("drake");
+        galleyAppController.updateSearchResultsModel("drake");
         if(galleyAppController.getSearchResultLength() < 20) galleyAppController.displayPopUp();
         setCenter(galleyAppController.getUpdatedTilePane());
 	}
