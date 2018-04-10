@@ -30,10 +30,13 @@ import javafx.geometry.Pos;
 
 public class GalleryAppController
 {
+    final int PANEMAXCOLUMNSIZE = 5;
+    final int PANEMAXROWSIZE = 4;
+    
+    final int PANEMAXELEMENTS = PANEMAXCOLUMNSIZE * PANEMAXROWSIZE;
+    final int MAXSEARCHRESULTS = 50;
 	boolean isPlaying = false;
 	TilePane tilePane;
-	//String[] urls = null;
-	
 	GalleryAppModel galleryAppModel = new GalleryAppModel();
 	
 	public GalleryAppModel getGalleryAppModel()
@@ -50,18 +53,25 @@ public class GalleryAppController
 	{
 		if(isPlaying)
 		{
-			System.out.println(LocalTime.now());
+            Random randomGenerator = new Random();
+            int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANEMAXELEMENTS);
+            int indexOfImageToBeSwapped2 = 0;
 			
-			Random rand = new Random();
-
-	        // Generate random integers in range 0 to 999
-	        int rand_int1 = rand.nextInt(20);
-	        
-	        System.out.println(rand_int1);
-	        galleryAppModel.getUrlList().set(rand_int1, "http://1millionlovemessages.com/wp-content/uploads/2013/12/Today%E2%80%99s-Love-Quote-21.jpg");
+			if(galleryAppModel.getUrlList().size() > PANEMAXELEMENTS) indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS) + 1) + PANEMAXELEMENTS + 1;
+			else
+			    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS - 2) + 1) + PANEMAXELEMENTS + 1;}
+			    while(indexOfImageToBeSwapped1 != indexOfImageToBeSwapped2);
+            swapUrlsInDataModel(indexOfImageToBeSwapped1,indexOfImageToBeSwapped2);
 		}
 	}
-	public GalleryAppController()
+	private void swapUrlsInDataModel(int indexOfImageToBeSwapped1, int indexOfImageToBeSwapped2)
+    {
+	    String tempUrlString = galleryAppModel.getUrlList().get(indexOfImageToBeSwapped1);
+	    galleryAppModel.getUrlList().set(indexOfImageToBeSwapped1,galleryAppModel.getUrlList().get(indexOfImageToBeSwapped2));
+	    galleryAppModel.getUrlList().set(indexOfImageToBeSwapped2,tempUrlString);
+    }
+
+    public GalleryAppController()
 	{
 
 		KeyFrame keyFrame = new KeyFrame(Duration.seconds(2), e -> keyFrameHandler(e));
@@ -89,8 +99,7 @@ public class GalleryAppController
 		if(updateImgBtn != null)
 		{
 	        getSearchResults(updateImgBtn.textField.getText());
-	        if(galleryAppModel.getUrlList().size() < 20) displayPopUp();
-	        //updateImgBtn.parentBorderPane.setCenter(getUpdatedTilePane());
+	        if(galleryAppModel.getUrlList().size() < PANEMAXELEMENTS) displayPopUp();
 		}
 	}
 
@@ -99,46 +108,37 @@ public class GalleryAppController
         TilePane tilePane = new TilePane();
         
         for(int i = 0; i < galleryAppModel.getUrlList().size(); i++)
-        	if(galleryAppModel.getUrlList().get(i) != null && i < 20)
+        	if(galleryAppModel.getUrlList().get(i) != null && i < PANEMAXELEMENTS)
         		tilePane.getChildren().add
         		(
-        		        new ImageView(new Image(galleryAppModel.getUrlList().get(i)))
-        		        {
-        		            {
-        		                setFitWidth(100);
-        		                setFitHeight(100);
-        		            }
-        		        }
+    		        new ImageView(new Image(galleryAppModel.getUrlList().get(i)))
+    		        {
+    		            {
+    		                setFitWidth(100);
+    		                setFitHeight(100);
+    		            }
+    		        }
         		);
         return tilePane;
 	}
 
 	private String[] parseResults(InputStreamReader reader) 
 	{
-		JsonParser jp = new JsonParser();
-		JsonElement je = jp.parse(reader);
-		
-		JsonObject root = je.getAsJsonObject();                      // root of response
-		JsonArray results = root.getAsJsonArray("results");          // "results" array
+		JsonArray results = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results");          // "results" array
 		int numResults = results.size();  							// "results" array size
 		
 		String[] parsedResults = new String[numResults];
 		
 		for (int i = 0; i < numResults; i++) 
 		{                       
-		    JsonObject result = results.get(i).getAsJsonObject();    // object i in array
-		    JsonElement artworkUrl100 = result.get("artworkUrl100"); // artworkUrl100 member
-		    if (artworkUrl100 != null) 
-		    {                             							// member might not exist
-		         String artUrl = artworkUrl100.getAsString();        // get member as string
-                 parsedResults[i] = artUrl;
-		    } // if
-		} // for
-		
+		    JsonElement artworkUrl100 = results.get(i).getAsJsonObject().get("artworkUrl100"); // artworkUrl100 member
+		    // check member existence and assign if present
+		    if (artworkUrl100 != null) parsedResults[i] = artworkUrl100.getAsString();
+		}
 		return parsedResults;
 	}
 	
-	public static void displayPopUp()
+	public void displayPopUp()
 	{
 
         Stage window = new Stage()
@@ -161,7 +161,7 @@ public class GalleryAppController
                             {
                                 getChildren().addAll
                                 (
-                                        new Label("Error: The search yields less than 20 results"),
+                                        new Label("Error: The search yields less than " + PANEMAXELEMENTS + "results"),
                                         new Label("Enter a new search"),
                                         new Button("Close")
                                         {
@@ -187,7 +187,7 @@ public class GalleryAppController
 			if(searchString != null)
 				searchString = searchString.replaceAll(" ", "+");
 			
-			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&entity=album" /*+ "&limit=20"*/);
+			URL url = new URL("https://itunes.apple.com/search?term=" + searchString + "&entity=album" + "&limit=" + MAXSEARCHRESULTS);
 			reader = new InputStreamReader(url.openStream());
 		}
 		

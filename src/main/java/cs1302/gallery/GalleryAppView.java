@@ -10,13 +10,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.ToolBar;
 
 public class GalleryAppView extends BorderPane
 {
@@ -30,20 +26,17 @@ public class GalleryAppView extends BorderPane
 		buildBottom();
 		buildCenter();
 		
-		this.galleyAppController.getGalleryAppModel().urlListProperty().addListener(new ChangeListener() 
-		{
-
-            @Override
-            public void changed(ObservableValue arg0, Object arg1, Object arg2)
-            {
-//                galleyAppController.getSearchResults("drake");
-//                if(galleyAppController.getSearchResultLength() < 20) galleyAppController.displayPopUp();
-                setCenter(galleyAppController.getUpdatedTilePane());
-                
-                System.out.println("ImageList changed");
-                
-            } 
-		});
+		this.galleyAppController.getGalleryAppModel().urlListProperty().addListener
+		(
+    		    new ChangeListener() 
+        		{
+                    @Override
+                    public void changed(ObservableValue arg0, Object arg1, Object arg2)
+                    {
+                        setCenter(galleyAppController.getUpdatedTilePane());
+                    } 
+        		}	    
+        );
 	}
 	
 	public void buildTop()
@@ -60,41 +53,26 @@ public class GalleryAppView extends BorderPane
 		hbox.setAlignment(Pos.CENTER_LEFT);
 		
 		//Button
-		Button slideShowButton = new Button("Play");
-		slideShowButton.setOnAction(e -> galleyAppController.slideShowEventHandler(e));
-		hbox.getChildren().add(slideShowButton);
-		
-		//Label Field
-		Label searchQueryLabel = new Label("Search Query: ");
-		hbox.getChildren().add(searchQueryLabel);
+		hbox.getChildren().add(new Button("Play"){{setOnAction(e -> galleyAppController.slideShowEventHandler(e));}});
+		hbox.getChildren().add(new Label("Search Query: "));
 		
 		//Text Field
 		TextField queryInput = new TextField();
 		hbox.getChildren().add(queryInput);
 		
 		//Button
-		SearchButton updateImagesButton = new SearchButton("Update Images", this ,queryInput,progressBar);
-		updateImagesButton.setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));
-		hbox.getChildren().add(updateImagesButton);
+		hbox.getChildren().add(new SearchButton("Update Images", this ,queryInput) {{setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));}});
 		
 		return hbox;
 	}
 
 	private MenuBar getMenuBar()
 	{
-		//File Menu
-		Menu fileMenu = new Menu("File");
-		
-		//Menu Items
-		MenuItem exit = new MenuItem("Exit");
-		exit.setOnAction (e -> galleyAppController.exitMenuHandler(e));
-		fileMenu.getItems().add(exit);
-		
 		//Main Menu Bar
-		MenuBar mainMenu = new MenuBar();
-		mainMenu.getMenus().addAll(fileMenu);
-		
-		return mainMenu;
+		return new MenuBar()
+		{{
+		    getMenus().addAll(new Menu("File"){{getItems().add(new MenuItem("Exit") {{setOnAction (e -> galleyAppController.exitMenuHandler(e));}});}});
+		}};
 	}
 	
 	public void buildCenter()
