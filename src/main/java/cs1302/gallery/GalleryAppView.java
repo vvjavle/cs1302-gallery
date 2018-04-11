@@ -67,7 +67,7 @@ public class GalleryAppView extends BorderPane
 	private Node getToolBar() 
 	{
 	    TextField queryInput = new TextField();
-	    SearchButton searchButton = new SearchButton("Update Images", this ,queryInput) {{setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));}};
+	    SearchButton searchButton = new SearchButton("Update Images",queryInput) {{setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));}};
 	    
 		return new HBox(15)
 		        {{
