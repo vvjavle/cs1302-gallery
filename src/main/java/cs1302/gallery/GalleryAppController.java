@@ -2,11 +2,8 @@ package cs1302.gallery;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import javafx.scene.layout.TilePane;
 import com.google.gson.JsonArray;
@@ -38,6 +35,7 @@ public class GalleryAppController
 	TilePane tilePane;
 	Timeline timeline = null;
 	GalleryAppModel galleryAppModel = new GalleryAppModel();
+	String[] results = null;
 	
 	public GalleryAppModel getGalleryAppModel()
 	{
@@ -61,14 +59,16 @@ public class GalleryAppController
 		    indexOfImageToBeSwapped2 = randomGenerator.nextInt(MAXSEARCHRESULTS  - 1 - PANEMAXELEMENTS) + PANEMAXELEMENTS - 1;
 		else
 		    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt(PANEMAXELEMENTS -1);}
-		    while(indexOfImageToBeSwapped1 != indexOfImageToBeSwapped2);
+		    while(indexOfImageToBeSwapped1 == indexOfImageToBeSwapped2);
+		
+		System.out.println ("Swapping " +  indexOfImageToBeSwapped1+ " and " + indexOfImageToBeSwapped2);
         swapUrlsInDataModel(indexOfImageToBeSwapped1,indexOfImageToBeSwapped2);
 	}
 	private void swapUrlsInDataModel(int indexOfImageToBeSwapped1, int indexOfImageToBeSwapped2)
     {
-	    String tempUrlString = galleryAppModel.getUrlList().get(indexOfImageToBeSwapped1);
-	    galleryAppModel.getUrlList().set(indexOfImageToBeSwapped1,galleryAppModel.getUrlList().get(indexOfImageToBeSwapped2));
-	    galleryAppModel.getUrlList().set(indexOfImageToBeSwapped2,tempUrlString);
+	    String tempUrlString = galleryAppModel.urlListProperty().get(indexOfImageToBeSwapped1);
+	    galleryAppModel.urlListProperty().set(indexOfImageToBeSwapped1,results[indexOfImageToBeSwapped2]);
+	    results[indexOfImageToBeSwapped2] = tempUrlString;
     }
 
     public GalleryAppController()
@@ -194,16 +194,14 @@ public class GalleryAppController
 
     public void updateSearchResultsModel(String searchString)
     {
-
-        
-       String[] results = parseResults(getQueryResults(searchString));
+       results = parseResults(getQueryResults(searchString));
        
        if (results.length < PANEMAXELEMENTS) displayPopUp();
        else
        {
-           galleryAppModel.getUrlList().clear();
-           for(String result : results)
-               galleryAppModel.getUrlList().add(result);
+           galleryAppModel.urlListProperty().clear();
+           for(int i=0;i<PANEMAXELEMENTS;i++)
+               galleryAppModel.urlListProperty().add(results[i]);
        }
     }
 }

@@ -1,8 +1,6 @@
 package cs1302.gallery;
 
 import java.util.ArrayList;
-import java.util.List;
-
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
@@ -15,7 +13,7 @@ public class GalleryAppModel
     private ListProperty<String> urlList = new SimpleListProperty<String>(observableList);
     
     // Define a getter for the property's value
-    public final List<String> getUrlList() {return urlList;}
+    public final ObservableList<String> getUrlList() {return urlList.getValue();}
  
      // Define a getter for the property itself
     public ListProperty<String> urlListProperty() {return urlList;}

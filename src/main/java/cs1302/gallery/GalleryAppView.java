@@ -1,6 +1,6 @@
 package cs1302.gallery;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -10,8 +10,11 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.TilePane;
 import javafx.scene.layout.VBox;
 
 public class GalleryAppView extends BorderPane
@@ -25,20 +28,20 @@ public class GalleryAppView extends BorderPane
 		buildTop();
 		buildBottom();
 		buildCenter();
-		
+
 		this.galleyAppController.getGalleryAppModel().urlListProperty().addListener
 		(
-    		    new ChangeListener() 
-        		{
-    		        int i = 0;
-                    @Override
-                    public void changed(ObservableValue arg0, Object arg1, Object arg2)
-                    {
-                        //System.out.println(i++ + ":" + arg0.getClass().toString() + "," + arg1.getClass().toString() + "," + arg2.getClass().toString());
-                        setCenter(galleyAppController.getUpdatedTilePane());
-                    } 
-        		}	    
-        );
+	        new ListChangeListener<String>()
+	        {
+                @Override
+                public void onChanged(Change<? extends String> change)
+                {
+                    change.next();
+                    int changeIndex = change.getFrom();
+                    ((TilePane)getCenter()).getChildren().set(changeIndex, new ImageView(new Image(change.getList().get(changeIndex))){{setFitWidth(100);setFitHeight(100);}} );
+                }
+	        }
+		);
 	}
 	
 	public void buildTop()
