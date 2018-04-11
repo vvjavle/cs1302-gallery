@@ -12,9 +12,7 @@ public class GalleryAppModel
 
     private ListProperty<String> urlList = new SimpleListProperty<String>(observableList);
     
-    // Define a getter for the property's value
     public final ObservableList<String> getUrlList() {return urlList.getValue();}
  
-     // Define a getter for the property itself
     public ListProperty<String> urlListProperty() {return urlList;}
 }

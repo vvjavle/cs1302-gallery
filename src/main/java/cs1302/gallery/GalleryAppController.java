@@ -49,19 +49,14 @@ public class GalleryAppController
 	
 	public void keyFrameHandler(ActionEvent e)
 	{
-	    System.out.println("Timer event occured");
         Random randomGenerator = new Random();
         int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANEMAXELEMENTS -1);
 
-        int indexOfImageToBeSwapped2 = 0;
-		
-		if(galleryAppModel.getUrlList().size() > PANEMAXELEMENTS)
-		    indexOfImageToBeSwapped2 = randomGenerator.nextInt(MAXSEARCHRESULTS  - 1 - PANEMAXELEMENTS) + PANEMAXELEMENTS - 1;
-		else
-		    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt(PANEMAXELEMENTS -1);}
-		    while(indexOfImageToBeSwapped1 == indexOfImageToBeSwapped2);
-		
-		System.out.println ("Swapping " +  indexOfImageToBeSwapped1+ " and " + indexOfImageToBeSwapped2);
+        int indexOfImageToBeSwapped2 = 
+                galleryAppModel.getUrlList().size() > PANEMAXELEMENTS?
+                        randomGenerator.nextInt(MAXSEARCHRESULTS  - 1 - PANEMAXELEMENTS) + PANEMAXELEMENTS - 1:
+                        randomGenerator.nextInt(PANEMAXELEMENTS -1);
+
         swapUrlsInDataModel(indexOfImageToBeSwapped1,indexOfImageToBeSwapped2);
 	}
 	private void swapUrlsInDataModel(int indexOfImageToBeSwapped1, int indexOfImageToBeSwapped2)
@@ -118,6 +113,7 @@ public class GalleryAppController
         	if(galleryAppModel.getUrlList().get(i) != null && i < PANEMAXELEMENTS)
         		tilePane.getChildren().add
         		(
+        		       
     		        new ImageView(new Image(galleryAppModel.getUrlList().get(i)))
     		        {{
 		                setFitWidth(100);

@@ -1,6 +1,7 @@
 package cs1302.gallery;
 
 import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -27,7 +28,7 @@ public class GalleryAppView extends BorderPane
 		this.galleyAppController = galleryAppController;
 		buildTop();
 		buildBottom();
-		buildCenter();
+	    buildCenter();
 
 		this.galleyAppController.getGalleryAppModel().urlListProperty().addListener
 		(
@@ -38,10 +39,24 @@ public class GalleryAppView extends BorderPane
                 {
                     change.next();
                     int changeIndex = change.getFrom();
-                    ((TilePane)getCenter()).getChildren().set(changeIndex, new ImageView(new Image(change.getList().get(changeIndex))){{setFitWidth(100);setFitHeight(100);}} );
+                    
+                    TilePane currentTilePane = (TilePane)getCenter();
+                    if(currentTilePane != null)
+                    {
+                        ObservableList<Node> nodes = currentTilePane.getChildren();
+                        if(nodes != null)
+                            if(change.wasReplaced() || change.wasAdded())
+                            {
+                                ObservableList<? extends String> changedList = change.getList();
+                                if(changedList != null)
+                                    nodes.set(changeIndex, new ImageView(new Image(changedList.get(changeIndex))) {{setFitWidth(100);setFitHeight(100);}});
+                            }
+                    }
                 }
 	        }
 		);
+
+        galleyAppController.updateSearchResultsModel("drake");
 	}
 	
 	public void buildTop()
@@ -77,9 +92,15 @@ public class GalleryAppView extends BorderPane
 	
 	public void buildCenter()
 	{	
-        galleyAppController.updateSearchResultsModel("drake");
-        if(galleyAppController.getSearchResultLength() < 20) galleyAppController.displayPopUp();
-        setCenter(galleyAppController.getUpdatedTilePane());
+
+//        if(galleyAppController.getSearchResultLength() < 20) galleyAppController.displayPopUp();
+        TilePane tilePane = new TilePane();
+        for(int i=0; i < 20;i++)
+            tilePane.getChildren().add
+            (
+                   
+                new ImageView());
+        setCenter(tilePane);
 	}
 	
 	private void buildBottom()
