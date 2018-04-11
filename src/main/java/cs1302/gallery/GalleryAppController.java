@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import javafx.scene.layout.TilePane;
@@ -52,13 +53,14 @@ public class GalleryAppController
 		if(isPlaying)
 		{
             Random randomGenerator = new Random();
-            int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANEMAXELEMENTS);
+            int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANEMAXELEMENTS) - 1;
+
             int indexOfImageToBeSwapped2 = 0;
 			
 			if(galleryAppModel.getUrlList().size() > PANEMAXELEMENTS)
-			    indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS) + 1) + PANEMAXELEMENTS + 1;
+			    indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS) + 1) + PANEMAXELEMENTS;
 			else
-			    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS - 2) + 1) + PANEMAXELEMENTS + 1;}
+			    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS - 2) + 1) + PANEMAXELEMENTS;}
 			    while(indexOfImageToBeSwapped1 != indexOfImageToBeSwapped2);
             swapUrlsInDataModel(indexOfImageToBeSwapped1,indexOfImageToBeSwapped2);
 		}
@@ -96,7 +98,7 @@ public class GalleryAppController
 		if(updateImgBtn != null)
 		{
 		    updateSearchResultsModel(updateImgBtn.textField.getText());
-	        if(galleryAppModel.getUrlList().size() < PANEMAXELEMENTS) displayPopUp();
+
 		}
 	}
 
@@ -117,17 +119,21 @@ public class GalleryAppController
         return tilePane;
 	}
 
-	public void parseResults(InputStreamReader reader) 
+	public String[] parseResults(InputStreamReader reader) 
 	{
 		JsonArray results = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results"); // "results" array
-		galleryAppModel.observableList.clear();
 		
-		for (int i = 0; i < results.size(); i++) 
+		int resultSize = results.size();
+		
+		String[] resultsStringArray = new String[resultSize];
+		
+		for (int i = 0; i < resultSize; i++) 
 		{                       
 		    JsonElement artworkUrl100 = results.get(i).getAsJsonObject().get("artworkUrl100"); // artworkUrl100 member
 		    // check member existence and assign if present
-		    if (artworkUrl100 != null) galleryAppModel.observableList.add(artworkUrl100.getAsString());
+		    if (artworkUrl100 != null) resultsStringArray[i] = artworkUrl100.getAsString();
 		}
+		return resultsStringArray;
 	}
 	
 	public void displayPopUp()
@@ -180,6 +186,16 @@ public class GalleryAppController
 
     public void updateSearchResultsModel(String searchString)
     {
-       parseResults(this.getQueryResults(searchString));
+
+        
+       String[] results = parseResults(getQueryResults(searchString));
+       
+       if (results.length < PANEMAXELEMENTS) displayPopUp();
+       else
+       {
+           galleryAppModel.getUrlList().clear();
+           for(String result : results)
+               galleryAppModel.getUrlList().add(result);
+       }
     }
 }
