@@ -163,7 +163,7 @@ public class GalleryAppController
                 {{
                     getChildren().addAll
                     (
-                        new Label("Error: The search yields less than " + PANEMAXELEMENTS + "results"),
+                        new Label("Error: The search yields less than " + PANEMAXELEMENTS + " results"),
                         new Label("Enter a new search"),
                         new Button("Close") {{setOnAction(e -> window.close());}}
                     );
