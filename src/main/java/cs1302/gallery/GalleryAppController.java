@@ -32,7 +32,6 @@ public class GalleryAppController
     final String URLPart1 = "https://itunes.apple.com/search?term=";
     final String URLPart2 = "&entity=album&limit=";
 	boolean isPlaying = false;
-	TilePane tilePane;
 	Timeline timeline = null;
 	GalleryAppModel galleryAppModel = new GalleryAppModel();
 	String[] results = null;
@@ -113,7 +112,6 @@ public class GalleryAppController
         	if(galleryAppModel.getUrlList().get(i) != null && i < PANEMAXELEMENTS)
         		tilePane.getChildren().add
         		(
-        		       
     		        new ImageView(new Image(galleryAppModel.getUrlList().get(i)))
     		        {{
 		                setFitWidth(100);
