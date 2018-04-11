@@ -36,6 +36,7 @@ public class GalleryAppController
     final String URLPart2 = "&entity=album&limit=";
 	boolean isPlaying = false;
 	TilePane tilePane;
+	Timeline timeline = null;
 	GalleryAppModel galleryAppModel = new GalleryAppModel();
 	
 	public GalleryAppModel getGalleryAppModel()
@@ -50,20 +51,18 @@ public class GalleryAppController
 	
 	public void keyFrameHandler(ActionEvent e)
 	{
-		if(isPlaying)
-		{
-            Random randomGenerator = new Random();
-            int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANEMAXELEMENTS) - 1;
+	    System.out.println("Timer event occured");
+        Random randomGenerator = new Random();
+        int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANEMAXELEMENTS -1);
 
-            int indexOfImageToBeSwapped2 = 0;
-			
-			if(galleryAppModel.getUrlList().size() > PANEMAXELEMENTS)
-			    indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS) + 1) + PANEMAXELEMENTS;
-			else
-			    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt((MAXSEARCHRESULTS - PANEMAXELEMENTS - 2) + 1) + PANEMAXELEMENTS;}
-			    while(indexOfImageToBeSwapped1 != indexOfImageToBeSwapped2);
-            swapUrlsInDataModel(indexOfImageToBeSwapped1,indexOfImageToBeSwapped2);
-		}
+        int indexOfImageToBeSwapped2 = 0;
+		
+		if(galleryAppModel.getUrlList().size() > PANEMAXELEMENTS)
+		    indexOfImageToBeSwapped2 = randomGenerator.nextInt(MAXSEARCHRESULTS  - 1 - PANEMAXELEMENTS) + PANEMAXELEMENTS - 1;
+		else
+		    do{indexOfImageToBeSwapped2 = randomGenerator.nextInt(PANEMAXELEMENTS -1);}
+		    while(indexOfImageToBeSwapped1 != indexOfImageToBeSwapped2);
+        swapUrlsInDataModel(indexOfImageToBeSwapped1,indexOfImageToBeSwapped2);
 	}
 	private void swapUrlsInDataModel(int indexOfImageToBeSwapped1, int indexOfImageToBeSwapped2)
     {
@@ -74,10 +73,9 @@ public class GalleryAppController
 
     public GalleryAppController()
 	{
-		Timeline timeline = new Timeline();
+		timeline = new Timeline();
 		timeline.setCycleCount(Timeline.INDEFINITE);
 		timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(2), e -> keyFrameHandler(e)));
-		timeline.play();
 	}
 	
 	
@@ -88,7 +86,18 @@ public class GalleryAppController
 	
 	public void slideShowEventHandler(ActionEvent e)
 	{
-		((Button) e.getSource()).setText((isPlaying = !isPlaying) ? "Pause" : "Play");
+	    Button  slideShowButton = (Button)e.getSource();
+	    if(isPlaying)
+	    {
+	        slideShowButton.setText("Play");
+	        timeline.pause();
+	    }
+	    else
+	    {
+            slideShowButton.setText("Pause");
+            timeline.play();
+	    }
+	    isPlaying = !isPlaying;
 	}
 	
 	public void updateImagesButtonHandler(ActionEvent e)
@@ -98,7 +107,6 @@ public class GalleryAppController
 		if(updateImgBtn != null)
 		{
 		    updateSearchResultsModel(updateImgBtn.textField.getText());
-
 		}
 	}
 
