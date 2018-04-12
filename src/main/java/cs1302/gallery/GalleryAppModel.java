@@ -25,6 +25,5 @@ public class GalleryAppModel
 
     public final String getQueryText() {return queryFieldProperty().get();}
 
-    public final void setQueryText(String queryText) {queryFieldProperty().set(queryText);
-    }
+    public final void setQueryText(String queryText) {queryFieldProperty().set(queryText);}
 }
