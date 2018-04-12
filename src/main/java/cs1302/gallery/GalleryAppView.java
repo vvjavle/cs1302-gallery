@@ -1,5 +1,6 @@
 package cs1302.gallery;
 
+import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -37,21 +38,25 @@ public class GalleryAppView extends BorderPane
                 @Override
                 public void onChanged(Change<? extends String> change)
                 {
-                    change.next();
-                    int changeIndex = change.getFrom();
-                    
-                    TilePane currentTilePane = (TilePane)getCenter();
-                    if(currentTilePane != null)
+                    Runnable r = () ->
                     {
-                        ObservableList<Node> nodes = currentTilePane.getChildren();
-                        if(nodes != null)
-                            if(change.wasReplaced() || change.wasAdded())
-                            {
-                                ObservableList<? extends String> changedList = change.getList();
-                                if(changedList != null)
-                                    nodes.set(changeIndex, new ImageView(new Image(changedList.get(changeIndex))) {{setFitWidth(100);setFitHeight(100);}});
-                            }
-                    }
+                        change.next();
+                        int changeIndex = change.getFrom();
+                        
+                        TilePane currentTilePane = (TilePane)getCenter();
+                        if(currentTilePane != null)
+                        {
+                            ObservableList<Node> nodes = currentTilePane.getChildren();
+                            if(nodes != null)
+                                if(change.wasReplaced() || change.wasAdded())
+                                {
+                                    ObservableList<? extends String> changedList = change.getList();
+                                    if(changedList != null)
+                                        nodes.set(changeIndex, new ImageView(new Image(changedList.get(changeIndex))) {{setFitWidth(100);setFitHeight(100);}});
+                                }
+                        }
+                    };
+                    Platform.runLater(r);
                 }
 	        }
 		);
