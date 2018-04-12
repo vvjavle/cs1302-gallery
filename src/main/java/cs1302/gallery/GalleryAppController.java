@@ -27,7 +27,7 @@ public class GalleryAppController
 {
     final int PANEMAXCOLUMNSIZE = 5;
     final int PANEMAXROWSIZE = 4;
-    final int PANEMAXELEMENTS = PANEMAXCOLUMNSIZE * PANEMAXROWSIZE;
+    public final int PANEMAXELEMENTS = PANEMAXCOLUMNSIZE * PANEMAXROWSIZE;
     final int MAXSEARCHRESULTS = 50;
     final String URLPart1 = "https://itunes.apple.com/search?term=";
     final String URLPart2 = "&entity=album&limit=";
