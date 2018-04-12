@@ -12,10 +12,8 @@ public class GalleryApp extends Application
     @Override
     public void start(Stage stage) 
     {
-		GalleryAppController galleryAppController = new GalleryAppController();
-        Scene scene = new Scene(new GalleryAppView(galleryAppController), windowWidth, windowHeight);
         stage.setTitle("[XYZ] Gallery!");
-        stage.setScene(scene);
+        stage.setScene(new Scene(new GalleryAppView(new GalleryAppController()), windowWidth, windowHeight));
         stage.setResizable(false);
         stage.show();
     }
