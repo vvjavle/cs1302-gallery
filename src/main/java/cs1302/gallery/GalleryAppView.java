@@ -95,7 +95,7 @@ public class GalleryAppView extends BorderPane
 	public void buildCenter()
 	{	
         TilePane tilePane = new TilePane();
-        for(int i=0; i < galleyAppController.PANEMAXELEMENTS;i++)
+        for(int i = 0; i < galleyAppController.PANE_MAX_ELEMENTS; i++)
             tilePane.getChildren().add(new ImageView());
         setCenter(tilePane);
 	}

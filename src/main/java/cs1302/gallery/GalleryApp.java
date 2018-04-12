@@ -6,8 +6,8 @@ import javafx.scene.Scene;
 
 public class GalleryApp extends Application 
 {
-	final double windowWidth = 500.0;
-	final double windowHeight = 480.0;
+	private final double windowWidth = 500.0;
+	private final double windowHeight = 480.0;
 	
     @Override
     public void start(Stage stage) 
