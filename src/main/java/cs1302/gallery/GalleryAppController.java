@@ -181,6 +181,48 @@ public class GalleryAppController
 		window.showAndWait();
 	}
 	
+	public void displayHelpPopUp()
+	{
+        Stage window = new Stage()
+        		        {{
+            		        initModality(Modality.APPLICATION_MODAL);
+            		        setTitle("About VED-JAVLE");
+            		        setWidth(400);
+            		        setHeight(250);
+            		        setResizable(false);
+        		        }};
+
+        window.setScene
+        (
+            new Scene
+            (
+            		
+                new VBox()
+                {{
+                    getChildren().addAll
+                    (
+                    		new ImageView(new Image("FullSizeRender.jpg"))
+            		        {{
+        		                setFitWidth(75);
+        		                setFitHeight(100);
+            		        }},
+            		        new Label(" "),
+                    		new Label("Name: Ved Javle"),
+                        new Label("Email: vvj82676@uga.edu"),
+                        new Label("Version 1.1.1"),
+                        new Label(" "),
+                        
+                        new Button("Close") {{setOnAction(e -> window.close());}}
+                    );
+                    
+                    setAlignment(Pos.CENTER);
+                }} 
+            )
+        );
+        
+		window.showAndWait();
+	}
+	
 	public InputStreamReader getQueryResults(String searchString)
 	{
 		InputStreamReader reader = null;

@@ -21,17 +21,17 @@ import javafx.scene.layout.VBox;
 
 public class GalleryAppView extends BorderPane
 {
-	GalleryAppController galleyAppController;
+	GalleryAppController galleryAppController;
 	ProgressBar progressBar = new ProgressBar();
 
 	public GalleryAppView(GalleryAppController galleryAppController)
 	{
-		this.galleyAppController = galleryAppController;
+		this.galleryAppController = galleryAppController;
 		buildTop();
 		buildBottom();
 	    buildCenter();
 
-		this.galleyAppController.getGalleryAppModel().urlListProperty().addListener
+		this.galleryAppController.getGalleryAppModel().urlListProperty().addListener
 		(
 	        new ListChangeListener<String>()
 	        {
@@ -61,7 +61,7 @@ public class GalleryAppView extends BorderPane
 	        }
 		);
 
-        galleyAppController.updateSearchResultsModel("drake");
+        galleryAppController.updateSearchResultsModel("drake");
 	}
 	
 	public void buildTop()
@@ -76,10 +76,10 @@ public class GalleryAppView extends BorderPane
             setAlignment(Pos.CENTER_LEFT);
             getChildren().addAll
             (
-                new Button("Play"){{setOnAction(e -> galleyAppController.slideShowEventHandler(e));}},
+                new Button("Play"){{setOnAction(e -> galleryAppController.slideShowEventHandler(e));}},
                 new Label("Search Query: "),
-                new TextField() {{textProperty().bindBidirectional(galleyAppController.galleryAppModel.queryFieldProperty());}},
-                new Button("Update Images") {{setOnAction(e -> galleyAppController.updateImagesButtonHandler(e));}}
+                new TextField() {{textProperty().bindBidirectional(galleryAppController.galleryAppModel.queryFieldProperty());}},
+                new Button("Update Images") {{setOnAction(e -> galleryAppController.updateImagesButtonHandler(e));}}
             );
         }};
 	}
@@ -88,14 +88,15 @@ public class GalleryAppView extends BorderPane
 	{
 		return new MenuBar() //Main Menu Bar
 		{{
-		    getMenus().addAll(new Menu("File"){{getItems().add(new MenuItem("Exit") {{setOnAction (e -> galleyAppController.exitMenuHandler(e));}});}});
+		    getMenus().addAll(new Menu("File") {{ getItems().add(new MenuItem("Exit") {{setOnAction (e -> galleryAppController.exitMenuHandler(e));}});}}
+		    					, new Menu("Help") {{getItems().add(new MenuItem("About") {{setOnAction(e -> galleryAppController.displayHelpPopUp());}});}});
 		}};
 	}
 	
 	public void buildCenter()
 	{	
         TilePane tilePane = new TilePane();
-        for(int i = 0; i < galleyAppController.PANE_MAX_ELEMENTS; i++)
+        for(int i = 0; i < galleryAppController.PANE_MAX_ELEMENTS; i++)
             tilePane.getChildren().add(new ImageView());
         setCenter(tilePane);
 	}

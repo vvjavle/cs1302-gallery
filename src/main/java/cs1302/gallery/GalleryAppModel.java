@@ -20,7 +20,6 @@ public class GalleryAppModel
     
     private final StringProperty queryText = new SimpleStringProperty();
 
-
     public StringProperty queryFieldProperty() {return queryText ;}
 
     public final String getQueryText() {return queryFieldProperty().get();}
