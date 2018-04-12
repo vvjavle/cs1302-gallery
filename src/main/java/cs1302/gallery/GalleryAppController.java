@@ -101,12 +101,7 @@ public class GalleryAppController
 	
 	public void updateImagesButtonHandler(ActionEvent e)
 	{
-		SearchButton updateImgBtn = (SearchButton) e.getSource();
-		
-		if(updateImgBtn != null)
-		{
-		    updateSearchResultsModel(updateImgBtn.textField.getText());
-		}
+	    updateSearchResultsModel(galleryAppModel.queryFieldProperty().get());
 	}
 
 	public TilePane getUpdatedTilePane()
