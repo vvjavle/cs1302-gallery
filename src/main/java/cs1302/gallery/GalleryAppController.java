@@ -77,7 +77,6 @@ public class GalleryAppController
 		timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(2), e -> keyFrameHandler(e)));
 	}
 	
-	
 	public void exitMenuHandler(ActionEvent e)
 	{
 		System.exit(0);
@@ -121,26 +120,24 @@ public class GalleryAppController
         return tilePane;
 	}
 
-	public String[] parseResults(InputStreamReader reader) 
+	public void parseResults(InputStreamReader reader) 
 	{
-		JsonArray results = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results"); // "results" array
+		JsonArray jsonResults = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results"); // "results" array
 		
-		int resultSize = results.size();
+		int resultSize = jsonResults.size();
 		
-		String[] resultsStringArray = new String[resultSize];
+		results = new String[resultSize];
 		
 		for (int i = 0; i < resultSize; i++) 
 		{                       
-		    JsonElement artworkUrl100 = results.get(i).getAsJsonObject().get("artworkUrl100"); // artworkUrl100 member
+		    JsonElement artworkUrl100 = jsonResults.get(i).getAsJsonObject().get("artworkUrl100"); // artworkUrl100 member
 		    // check member existence and assign if present
-		    if (artworkUrl100 != null) resultsStringArray[i] = artworkUrl100.getAsString();
+		    if (artworkUrl100 != null) results[i] = artworkUrl100.getAsString();
 		}
-		return resultsStringArray;
 	}
 	
 	public void displayPopUp()
 	{
-
         Stage window = new Stage()
         		        {{
             		        initModality(Modality.APPLICATION_MODAL);
@@ -188,14 +185,14 @@ public class GalleryAppController
 
     public void updateSearchResultsModel(String searchString)
     {
-       results = parseResults(getQueryResults(searchString));
-       
-       if (results.length < PANEMAXELEMENTS) displayPopUp();
-       else
-       {
-           galleryAppModel.urlListProperty().clear();
-           for(int i=0;i<PANEMAXELEMENTS;i++)
-               galleryAppModel.urlListProperty().add(results[i]);
-       }
+       parseResults(getQueryResults(searchString));
+       if(results != null)
+           if (results.length < PANEMAXELEMENTS) displayPopUp();
+           else
+           {
+               galleryAppModel.urlListProperty().clear();
+               for(int i=0;i<PANEMAXELEMENTS;i++)
+                   galleryAppModel.urlListProperty().add(results[i]);
+           }
     }
 }
