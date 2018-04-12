@@ -120,20 +120,21 @@ public class GalleryAppController
         return tilePane;
 	}
 
-	public void parseResults(InputStreamReader reader) 
+	public String[] parseResults(InputStreamReader reader) 
 	{
 		JsonArray jsonResults = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results"); // "results" array
 		
 		int resultSize = jsonResults.size();
 		
-		results = new String[resultSize];
+		String[] searchResults = new String[resultSize];
 		
 		for (int i = 0; i < resultSize; i++) 
 		{                       
 		    JsonElement artworkUrl100 = jsonResults.get(i).getAsJsonObject().get("artworkUrl100"); // artworkUrl100 member
 		    // check member existence and assign if present
-		    if (artworkUrl100 != null) results[i] = artworkUrl100.getAsString();
+		    if (artworkUrl100 != null) searchResults[i] = artworkUrl100.getAsString();
 		}
+		return searchResults;
 	}
 	
 	public void displayPopUp()
@@ -185,14 +186,23 @@ public class GalleryAppController
 
     public void updateSearchResultsModel(String searchString)
     {
-       parseResults(getQueryResults(searchString));
-       if(results != null)
-           if (results.length < PANEMAXELEMENTS) displayPopUp();
+       String[] parsedSearchResults = parseResults(getQueryResults(searchString));
+       if(parsedSearchResults != null)
+       {
+           int parsedSearchResultsLength = parsedSearchResults.length;
+           if (parsedSearchResultsLength < PANEMAXELEMENTS) displayPopUp();
            else
            {
                galleryAppModel.urlListProperty().clear();
-               for(int i=0;i<PANEMAXELEMENTS;i++)
-                   galleryAppModel.urlListProperty().add(results[i]);
+               results = null;
+               results = new String[parsedSearchResultsLength];
+               for(int i=0;i<parsedSearchResultsLength;i++)
+               {
+                   results[i] = parsedSearchResults[i];
+                   if(i<PANEMAXELEMENTS)
+                       galleryAppModel.urlListProperty().add(results[i]);
+               }
            }
+       }
     }
 }
