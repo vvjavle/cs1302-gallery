@@ -21,8 +21,8 @@ import javafx.scene.layout.VBox;
 
 public class GalleryAppView extends BorderPane
 {
-	GalleryAppController galleryAppController;
-	ProgressBar progressBar = new ProgressBar();
+	private GalleryAppController galleryAppController;
+	private ProgressBar progressBar = new ProgressBar();
 
 	public GalleryAppView(GalleryAppController galleryAppController)
 	{
