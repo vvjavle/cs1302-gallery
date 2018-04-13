@@ -118,24 +118,6 @@ public class GalleryAppController
 	    t.start();
 	}
 
-	public TilePane getUpdatedTilePane()
-	{
-        TilePane tilePane = new TilePane();
-        
-        for(int i = 0; i < galleryAppModel.getUrlList().size(); i++)
-        	if(galleryAppModel.getUrlList().get(i) != null && i < PANE_MAX_ELEMENTS)
-        		tilePane.getChildren().add
-        		(
-    		        new ImageView(new Image(galleryAppModel.getUrlList().get(i)))
-    		        {{
-		                setFitWidth(100);
-		                setFitHeight(100);
-    		        }}
-        		);
-        
-        	return tilePane;
-	}
-
 	public String[] parseResults(InputStreamReader reader) 
 	{
 		JsonArray jsonResults = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results"); // "results" array
@@ -197,15 +179,14 @@ public class GalleryAppController
         		        }};
 
         window.setScene
-        (
-            new Scene
+        (new Scene
             (
             		
                 new VBox()
                 {{
                     getChildren().addAll
                     (
-                    		new ImageView(new Image("FullSizeRender.jpg"))
+                    		new ImageView(new Image("file:///Users/VeDave/Google%20Drive/IMG_8763.JPG"))
             		        {{
         		                setFitWidth(75);
         		                setFitHeight(100);
@@ -221,8 +202,7 @@ public class GalleryAppController
                     
                     setAlignment(Pos.CENTER);
                 }} 
-            )
-        );
+            ));
         
 		window.showAndWait();
 	}
@@ -234,7 +214,8 @@ public class GalleryAppController
 		try
 		{
 			if(searchString != null)
-    				reader = new InputStreamReader(new URL(URL_Part_1 + searchString.replaceAll(" ", "+") + URL_Part_2 + MAX_SEARCH_RESULTS).openStream());
+    				reader = new InputStreamReader(new URL(URL_Part_1 + searchString.replaceAll(" ", "+") + 
+    						URL_Part_2 + MAX_SEARCH_RESULTS).openStream());
 		}
 		
 		catch(MalformedURLException e) {e.printStackTrace();}
@@ -259,7 +240,8 @@ public class GalleryAppController
             try
             {
                 Thread.sleep(200);
-            } catch (InterruptedException e)
+            } 
+            catch (InterruptedException e)
             {
                 e.printStackTrace();
             };
