@@ -240,36 +240,59 @@ public class GalleryAppController
 		
 		return reader;
 	}
+	
+	class MyRunnable implements Runnable
+	{
+	    private int progressIndicator;
 
-    	public void updateSearchResultsModel(String searchString)
-    	{
-    		String[] parsedSearchResults = parseResults(getQueryResults(searchString));
-       	if(parsedSearchResults != null)
+	    public MyRunnable(int progressIndicator)
+	    {
+	        this.progressIndicator = progressIndicator;
+	    }
+        @Override
+        public void run()
+        {
+            galleryAppModel.progressProperty.set(progressIndicator/((PANE_MAX_ELEMENTS-1)/1.0));
+            try
+            {
+                Thread.sleep(200);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            };
+        }
+	}
+	
+	public void updateSearchResultsModel(String searchString)
+	{
+	    String[] parsedSearchResults = parseResults(getQueryResults(searchString));
+         
+	    if(parsedSearchResults != null)
        	{
            	int parsedSearchResultsLength = parsedSearchResults.length;
-           	
-           	Runnable r = () -> 
+
+       		if (parsedSearchResultsLength < PANE_MAX_ELEMENTS)
+       		{
+       		    Runnable r = () -> displayPopUp();
+       		    Platform.runLater(r);
+       		}
+           	else
            	{
-           		if (parsedSearchResultsLength < PANE_MAX_ELEMENTS) 
-	        	   	   	displayPopUp();
-	           
-	           	else
-	           	{
-	               	galleryAppModel.urlListProperty().clear();
-	               	results = null;
-	               	results = new String[parsedSearchResultsLength];
-	               
-	               	for(int i = 0; i < parsedSearchResultsLength; i++)
-	               	{
-	                   	results[i] = parsedSearchResults[i];
-	                   
-	                   	if(i < PANE_MAX_ELEMENTS)
-	                   		galleryAppModel.urlListProperty().add(results[i]);
-	               	}
-	           	}
-           	};
-           	
-           	Platform.runLater(r);
-       	} 
-    } // updateSearchResults 	
+               	galleryAppModel.urlListProperty().clear();
+               	results = null;
+               	results = new String[parsedSearchResultsLength];
+
+               	for(int i = 0; i < parsedSearchResultsLength; i++)
+               	{
+                   	results[i] = parsedSearchResults[i];
+                   
+                   	if(i < PANE_MAX_ELEMENTS)
+                   	{
+                   	    new MyRunnable(i).run();
+                   	    galleryAppModel.urlListProperty().add(results[i]); 
+                   	}
+               	}
+           	}
+       	}
+	} // updateSearchResults 	
 }

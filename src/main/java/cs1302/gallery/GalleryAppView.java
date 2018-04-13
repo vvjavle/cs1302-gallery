@@ -104,6 +104,7 @@ public class GalleryAppView extends BorderPane
 	
 	private void buildBottom()
     {		
+	    progressBar.progressProperty().bind(galleryAppController.galleryAppModel.progressProperty);
 		setBottom(progressBar);
 	}
 }
