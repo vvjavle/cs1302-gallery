@@ -31,6 +31,12 @@ import javafx.scene.layout.TilePane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+/**
+ * GalleryAppView is responsible for displaying the functions that need to 
+ * be carried out on the gallery GUI.
+ * 
+ * @author Ved Javle (811690870)
+ */
 public class GalleryAppView extends BorderPane
 {
 	private GalleryAppController galleryAppController;
@@ -38,6 +44,13 @@ public class GalleryAppView extends BorderPane
 	TextField queryTextField = new TextField();
 	Button updateImagesButton = new Button("Update Images");
 
+	/**
+	 * Constructs the GalleryAppView
+	 * 
+	 * @param galleryAppController an instance of the GalleryAppController
+	 * 							  class is passed through so that the methods
+	 * 							  of GalleryAppController can be called
+	 */
 	public GalleryAppView(GalleryAppController galleryAppController)
 	{
 		this.galleryAppController = galleryAppController;
@@ -79,15 +92,24 @@ public class GalleryAppView extends BorderPane
 		
 		//After all screen elements initialization and wiring up their event handlers,
 		//set the text field to default query and programatically fire action event of the button from View
-		queryTextField.setText("drake");
+		queryTextField.setText("rock");
 		updateImagesButton.fireEvent(new ActionEvent());
 	}
 	
+	/**
+	 * Constructs the top of the border-pane.
+	 */
 	public void buildTop()
     {
 		setTop(new VBox() {{getChildren().addAll(getMenuBar(),getToolBar());}});
 	}
 
+	/**
+	 * Creates and returns a tool bar that holds the play/pause button, a label, a text-field, and the update
+	 * images button.
+	 * 
+	 * @return returns a node (in the form of an HBox) containing the elements of the tool-bar
+	 */
 	private Node getToolBar() 
 	{
 		return new HBox(15)
@@ -104,7 +126,12 @@ public class GalleryAppView extends BorderPane
             );
         }};
 	}
-
+	
+	/**
+	 * Constructs and returns a menu-bar.
+	 * 
+	 * @return returns a menu-bar containing a file and help option
+	 */
 	private MenuBar getMenuBar()
 	{
 		return new MenuBar() //Main Menu Bar
@@ -114,6 +141,9 @@ public class GalleryAppView extends BorderPane
 		}};
 	}
 	
+	/**
+	 * Constructs the center of the border-pane.
+	 */
 	public void buildCenter()
 	{	
         TilePane tilePane = new TilePane();
@@ -122,6 +152,9 @@ public class GalleryAppView extends BorderPane
         setCenter(tilePane);
 	}
 	
+	/**
+	 * Constructs the bottom of the border-pane (which contains a progress bar and label).
+	 */
 	private void buildBottom()
     {		
 		HBox hb = new HBox();

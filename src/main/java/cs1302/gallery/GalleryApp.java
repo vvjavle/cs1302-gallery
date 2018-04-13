@@ -5,11 +5,20 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 
+/**
+ * GalleryApp is responsible for the execution of the gallery GUI
+ * 
+ * @author Ved Javle (811690870)
+ *
+ */
 public class GalleryApp extends Application 
 {
 	private final double windowWidth = 500.0;
 	private final double windowHeight = 480.0;
 	
+	/**
+	 * {@inheritDoc}
+	 */
     @Override
     public void start(Stage stage) 
     {
@@ -18,7 +27,12 @@ public class GalleryApp extends Application
         stage.setResizable(false);
         stage.show();
     }
-
+    
+    /**
+     * Method responsible for executing the program
+     * 
+     * @param args
+     */
 	public static void main(String[] args) 
     {
 		try 

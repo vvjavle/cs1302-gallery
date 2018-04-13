@@ -36,6 +36,13 @@ import javafx.stage.Modality;
 //Geometry Imports
 import javafx.geometry.Pos;
 
+/**
+ * GalleryAppController class is responsible for holding all the functions of 
+ * the gallery GUI.
+ * 
+ * @author Ved Javle (811690870)
+ *
+ */
 public class GalleryAppController
 {
     private final int PANE_MAX_COLUMN_SIZE = 5;
@@ -51,22 +58,48 @@ public class GalleryAppController
 	public GalleryAppModel galleryAppModel = new GalleryAppModel();
 	private String[] results = null;
 	
-	
+	/**
+	 * Get the size of the array containing the image url's.
+	 * Checks to see if the array is null before returning the
+	 * size of the array.
+	 * 
+	 * @returns returns 0 if the array is null, and the number
+	 * 			elements in the array if it is not
+	 */
 	private int getResultsSize()
 	{
 	    return results == null? 0 : results.length;
 	}
 	
+	/**
+	 * Returns a reference of the GalleryAppModel class.
+	 * 
+	 * @return returns reference to the GalleryAppModel class
+	 */
 	public GalleryAppModel getGalleryAppModel()
 	{
 	    return galleryAppModel;
 	}
 	
+	/**
+	 * Returns length of the string in text field.
+	 * 
+	 * @return returns the length of the query in the 
+	 * 		   text field
+	 */
 	public int getSearchResultLength()
 	{
 	    return galleryAppModel.getUrlList().size();
 	}
 	
+	/**
+	 * Finds two random indices within the url array. The first
+	 * random index resides within the first 20 elements and the
+	 * second random index from the 21st element onwards. If the
+	 * array is only 20 elements long, it swaps to images. 
+	 * 
+	 * @param e ActionEvent of the pause/play button being pressed
+	 */
 	public void keyFrameHandler(ActionEvent e)
 	{
         Random randomGenerator = new Random();
@@ -81,13 +114,22 @@ public class GalleryAppController
         swapUrlsInDataModel(indexOfImageToBeSwapped1, indexOfImageToBeSwapped2);
 	}
 	
+	/**
+	 * Swaps two indices within the array of url's.
+	 * 
+	 * @param indexOfImageToBeSwapped1 index within the first 20 elements to be swapped
+	 * @param indexOfImageToBeSwapped2 index from the 21st element onward to be swap
+	 */
 	private void swapUrlsInDataModel(int indexOfImageToBeSwapped1, int indexOfImageToBeSwapped2)
     {
 	    String tempUrlString = galleryAppModel.urlListProperty().get(indexOfImageToBeSwapped1);
 	    galleryAppModel.urlListProperty().set(indexOfImageToBeSwapped1, results[indexOfImageToBeSwapped2]);
 	    results[indexOfImageToBeSwapped2] = tempUrlString;
     }
-
+	
+	/**
+	 * Constructs the GalleryAppController.
+	 */
     public GalleryAppController()
 	{
 		timeline = new Timeline();
@@ -95,11 +137,21 @@ public class GalleryAppController
 		timeline.getKeyFrames().add(new KeyFrame(Duration.seconds(2), e -> keyFrameHandler(e)));
 	}
 	
+    /**
+     * Handles the exiting of the gallery program.
+     * 
+     * @param e An ActionEvent representing the pressing of the exit option
+     */
 	public void exitMenuHandler(ActionEvent e)
 	{
 		System.exit(0);
 	}
 	
+	/**
+	 * Handles the slide-show function of the gallery program.
+	 * 
+	 * @param e An ActionEvent representing the pressing of the play/pause button
+	 */
 	public void slideShowEventHandler(ActionEvent e)
 	{
 	    Button  slideShowButton = (Button) e.getSource();
@@ -119,6 +171,11 @@ public class GalleryAppController
 	    isPlaying = !isPlaying;
 	}
 	
+	/**
+	 * Handles the updating of images after a query is entered in the gallery program.
+	 * 
+	 * @param e An ActionEvent representing the update images button being pressed
+	 */
 	public void updateImagesButtonHandler(ActionEvent e)
 	{
 	    Thread t = new Thread(() -> 
@@ -130,7 +187,13 @@ public class GalleryAppController
 	    
 	    t.start();
 	}
-
+	
+	/**
+	 * Stores the urls of images into a string array
+	 * 
+	 * @param reader An InputStreamReader from gson
+	 * @return searchResults returns an array of image url's corresponding to the search query
+	 */
 	public String[] parseResults(InputStreamReader reader) 
 	{
 		JsonArray jsonResults = new JsonParser().parse(reader)
@@ -150,6 +213,10 @@ public class GalleryAppController
 		return searchResults;
 	}
 	
+	/**
+	 * Constructs and displays a pop up window that is application modal, when a search query produces
+	 * less than 20 results.
+	 */
 	public void displayPopUp()
 	{
         Stage window = new Stage()
@@ -180,6 +247,10 @@ public class GalleryAppController
 		window.showAndWait();
 	}
 	
+	/**
+	 * Constructs and displays a pop up window that is application modal to display information about the
+	 * author and the program version.
+	 */
 	public void displayHelpPopUp()
 	{
         Stage window = new Stage()
@@ -218,6 +289,12 @@ public class GalleryAppController
 		window.showAndWait();
 	}
 	
+	/**
+	 * Returns a InputStreamField from the gson file.
+	 * 
+	 * @param searchString A search query that is passed in from the text field
+	 * @return Returns a InputStreamField from the gson file
+	 */
 	public InputStreamReader getQueryResults(String searchString)
 	{
 		InputStreamReader reader = null;
@@ -236,15 +313,30 @@ public class GalleryAppController
 		return reader;
 	}
 	
+	/**
+	 * Nested class that implements Runnable to assist in the delay of progress bar
+	 * in tandem to the displaying of the images.
+	 * 
+	 * @author Ved Javle (811690870)
+	 *
+	 */
 	private class MyRunnable implements Runnable
 	{
 	    private int progressIndicator;
-
+	    
+	    /**
+	     * Constructs the MyRunnable class
+	     * 
+	     * @param progressIndicator progressIndicator is assigned to the one passed in
+	     */
 	    public MyRunnable(int progressIndicator)
 	    {
 	        this.progressIndicator = progressIndicator;
 	    }
 	    
+	    /**
+	     * {@inheritDoc}
+	     */
         @Override
         public void run()
         {
@@ -261,6 +353,14 @@ public class GalleryAppController
         }
 	}
 	
+	/**
+	 * Updates the images displayed on the grid when a new search query is entered.
+	 * If the query produces less than 20 results a pop-up window is displayed and the
+	 * previous query's images remain on the screen. If the query produces 20 or more 
+	 * results, the new images corresponding to the query are displayed.
+	 * 
+	 * @param searchString A search query from the text field
+	 */
 	public void updateSearchResultsModel(String searchString)
 	{
 	    String[] parsedSearchResults = parseResults(getQueryResults(searchString));
