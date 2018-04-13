@@ -1,28 +1,40 @@
 package cs1302.gallery;
 
+//IO Imports
 import java.io.IOException;
 import java.io.InputStreamReader;
+
+//Net Imports
 import java.net.MalformedURLException;
 import java.net.URL;
+
+//Util Imports
 import java.util.Random;
-import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
+
+//GSON Imports
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+
+//Scene Imports
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Stage;
-import javafx.util.Duration;
-import javafx.stage.Modality;
 import javafx.scene.control.Label;
-import javafx.scene.Scene;
-import javafx.geometry.Pos;
+
+//Driver Imports
 import javafx.application.Platform;
+import javafx.stage.Stage;
+import javafx.stage.Modality;
+
+//Geometry Imports
+import javafx.geometry.Pos;
 
 public class GalleryAppController
 {
@@ -120,7 +132,9 @@ public class GalleryAppController
 
 	public String[] parseResults(InputStreamReader reader) 
 	{
-		JsonArray jsonResults = new JsonParser().parse(reader).getAsJsonObject().getAsJsonArray("results"); // "results" array
+		JsonArray jsonResults = new JsonParser().parse(reader)
+												.getAsJsonObject()
+												.getAsJsonArray("results"); // "results" array
 		
 		int resultSize = jsonResults.size();
 		
@@ -128,7 +142,7 @@ public class GalleryAppController
 		
 		for (int i = 0; i < resultSize; i++) 
 		{                       
-		    JsonElement artworkUrl100 = jsonResults.get(i).getAsJsonObject().get("artworkUrl100"); // artworkUrl100 member
+		    JsonElement artworkUrl100 = jsonResults.get(i).getAsJsonObject().get("artworkUrl100");
 		    // check member existence and assign if present
 		    if (artworkUrl100 != null) searchResults[i] = artworkUrl100.getAsString();
 		}
@@ -147,22 +161,20 @@ public class GalleryAppController
         		        }};
 
         window.setScene
-        (
-            new Scene
-            (
-                new VBox()
+        (new Scene
+            (new VBox()
                 {{
                     getChildren().addAll
                     (
                         new Label("Error: The search yields less than " + PANE_MAX_ELEMENTS + " results"),
                         new Label("Enter a new search"),
+                        new Label(" "),
                         new Button("Close") {{setOnAction(e -> window.close());}}
                     );
                     
                     setAlignment(Pos.CENTER);
                 }} 
-            )
-        );
+            ));
         
 		window.showAndWait();
 	}
@@ -174,22 +186,20 @@ public class GalleryAppController
             		        initModality(Modality.APPLICATION_MODAL);
             		        setTitle("About VED-JAVLE");
             		        setWidth(400);
-            		        setHeight(250);
+            		        setHeight(400);
             		        setResizable(false);
         		        }};
 
         window.setScene
         (new Scene
-            (
-            		
-                new VBox()
+            (new VBox()
                 {{
                     getChildren().addAll
                     (
-                    		new ImageView(new Image("file:///Users/VeDave/Google%20Drive/IMG_8763.JPG"))
+                    		new ImageView(new Image("https://i.imgur.com/De6Hprm.jpg"))
             		        {{
-        		                setFitWidth(75);
-        		                setFitHeight(100);
+        		                setFitWidth(180);
+        		                setFitHeight(200);
             		        }},
             		        new Label(" "),
                     		new Label("Name: Ved Javle"),
@@ -225,7 +235,7 @@ public class GalleryAppController
 		return reader;
 	}
 	
-	class MyRunnable implements Runnable
+	private class MyRunnable implements Runnable
 	{
 	    private int progressIndicator;
 
@@ -233,10 +243,12 @@ public class GalleryAppController
 	    {
 	        this.progressIndicator = progressIndicator;
 	    }
+	    
         @Override
         public void run()
         {
-            galleryAppModel.progressProperty.set(progressIndicator/((PANE_MAX_ELEMENTS-1)/1.0));
+            galleryAppModel.progressProperty
+            				   .set(progressIndicator / ((PANE_MAX_ELEMENTS - 1) / 1.0));
             try
             {
                 Thread.sleep(200);
@@ -277,7 +289,7 @@ public class GalleryAppController
                    	    galleryAppModel.urlListProperty().add(results[i]); 
                    	}
                	}
-           	}
+           	} // else
        	}
 	} // updateSearchResults 	
 }

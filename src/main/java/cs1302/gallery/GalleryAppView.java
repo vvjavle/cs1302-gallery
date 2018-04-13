@@ -1,11 +1,18 @@
 package cs1302.gallery;
 
+//Driver Imports
 import javafx.application.Platform;
+
+//Collections Imports
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+
+//Event Imports
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+
+//Control Imports
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
@@ -13,11 +20,15 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
+
+//Image Imports
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+//Layout Pans Imports
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.TilePane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class GalleryAppView extends BorderPane
@@ -55,7 +66,8 @@ public class GalleryAppView extends BorderPane
                                 {
                                     ObservableList<? extends String> changedList = change.getList();
                                     if(changedList != null)
-                                        nodes.set(changeIndex, new ImageView(new Image(changedList.get(changeIndex))) {{setFitWidth(100);setFitHeight(100);}});
+                                        nodes.set(changeIndex, 
+                                        			new ImageView(new Image(changedList.get(changeIndex))) {{setFitWidth(100); setFitHeight(100);}});
                                 }
                         }
                     };
