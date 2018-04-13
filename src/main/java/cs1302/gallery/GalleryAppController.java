@@ -22,6 +22,7 @@ import javafx.stage.Modality;
 import javafx.scene.control.Label;
 import javafx.scene.Scene;
 import javafx.geometry.Pos;
+import javafx.application.Platform;
 
 public class GalleryAppController
 {
@@ -246,24 +247,29 @@ public class GalleryAppController
        	if(parsedSearchResults != null)
        	{
            	int parsedSearchResultsLength = parsedSearchResults.length;
-           
-           	if (parsedSearchResultsLength < PANE_MAX_ELEMENTS) 
-        	   	   	displayPopUp();
-           
-           	else
+           	
+           	Runnable r = () -> 
            	{
-               	galleryAppModel.urlListProperty().clear();
-               	results = null;
-               	results = new String[parsedSearchResultsLength];
-               
-               	for(int i = 0; i < parsedSearchResultsLength; i++)
-               	{
-                   	results[i] = parsedSearchResults[i];
-                   
-                   	if(i < PANE_MAX_ELEMENTS)
-                   		galleryAppModel.urlListProperty().add(results[i]);
-               	}
-           	}
+           		if (parsedSearchResultsLength < PANE_MAX_ELEMENTS) 
+	        	   	   	displayPopUp();
+	           
+	           	else
+	           	{
+	               	galleryAppModel.urlListProperty().clear();
+	               	results = null;
+	               	results = new String[parsedSearchResultsLength];
+	               
+	               	for(int i = 0; i < parsedSearchResultsLength; i++)
+	               	{
+	                   	results[i] = parsedSearchResults[i];
+	                   
+	                   	if(i < PANE_MAX_ELEMENTS)
+	                   		galleryAppModel.urlListProperty().add(results[i]);
+	               	}
+	           	}
+           	};
+           	
+           	Platform.runLater(r);
        	} 
     } // updateSearchResults 	
 }

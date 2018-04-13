@@ -56,6 +56,7 @@ public class GalleryAppView extends BorderPane
                                 }
                         }
                     };
+                    
                     Platform.runLater(r);
                 }
 	        }
