@@ -57,6 +57,7 @@ public class GalleryAppController
 	public void keyFrameHandler(ActionEvent e)
 	{
         Random randomGenerator = new Random();
+ 
         int indexOfImageToBeSwapped1 = randomGenerator.nextInt(PANE_MAX_ELEMENTS - 1);
 
         int indexOfImageToBeSwapped2 = 
@@ -109,7 +110,9 @@ public class GalleryAppController
 	{
 	    Thread t = new Thread(() -> 
 	    {
+	        if(isPlaying) timeline.pause();
 	        updateSearchResultsModel(galleryAppModel.queryFieldProperty().get());
+	        if(isPlaying) timeline.play();
 	    });
 	    
 	    t.start();
