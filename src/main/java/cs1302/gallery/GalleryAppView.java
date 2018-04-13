@@ -3,6 +3,7 @@ package cs1302.gallery;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -23,6 +24,8 @@ public class GalleryAppView extends BorderPane
 {
 	private GalleryAppController galleryAppController;
 	private ProgressBar progressBar = new ProgressBar();
+	TextField queryTextField = new TextField();
+	Button updateImagesButton = new Button("Update Images");
 
 	public GalleryAppView(GalleryAppController galleryAppController)
 	{
@@ -61,8 +64,11 @@ public class GalleryAppView extends BorderPane
                 }
 	        }
 		);
-
-        galleryAppController.updateSearchResultsModel("drake");
+		
+		//After all screen elements initialization and wiring up their event handlers,
+		//set the text field to default query and programatically fire action event of the button from View
+		queryTextField.setText("drake");
+		updateImagesButton.fireEvent(new ActionEvent());
 	}
 	
 	public void buildTop()
@@ -75,12 +81,14 @@ public class GalleryAppView extends BorderPane
 		return new HBox(15)
         {{
             setAlignment(Pos.CENTER_LEFT);
+            queryTextField.textProperty().bindBidirectional(galleryAppController.galleryAppModel.queryFieldProperty());
+            updateImagesButton.setOnAction(e -> galleryAppController.updateImagesButtonHandler(e));
             getChildren().addAll
             (
                 new Button("Play"){{setOnAction(e -> galleryAppController.slideShowEventHandler(e));}},
                 new Label("Search Query: "),
-                new TextField() {{textProperty().bindBidirectional(galleryAppController.galleryAppModel.queryFieldProperty());}},
-                new Button("Update Images") {{setOnAction(e -> galleryAppController.updateImagesButtonHandler(e));}}
+                queryTextField,
+                updateImagesButton
             );
         }};
 	}
