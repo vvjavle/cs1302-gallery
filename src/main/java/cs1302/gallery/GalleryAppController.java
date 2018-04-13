@@ -51,6 +51,7 @@ public class GalleryAppController
 	public GalleryAppModel galleryAppModel = new GalleryAppModel();
 	private String[] results = null;
 	
+	
 	private int getResultsSize()
 	{
 	    return results == null? 0 : results.length;
@@ -75,7 +76,7 @@ public class GalleryAppController
         int indexOfImageToBeSwapped2 = 
                 galleryAppModel.getUrlList().size() > PANE_MAX_ELEMENTS?
                         randomGenerator.nextInt(getResultsSize() - 1 - PANE_MAX_ELEMENTS) + PANE_MAX_ELEMENTS - 1:
-                        randomGenerator.nextInt(/*PANE_MAX_ELEMENTS - 1*/ getResultsSize());
+                        randomGenerator.nextInt(getResultsSize());
 
         swapUrlsInDataModel(indexOfImageToBeSwapped1, indexOfImageToBeSwapped2);
 	}

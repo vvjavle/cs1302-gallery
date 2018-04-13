@@ -124,7 +124,13 @@ public class GalleryAppView extends BorderPane
 	
 	private void buildBottom()
     {		
+		HBox hb = new HBox();
+		
 	    progressBar.progressProperty().bind(galleryAppController.galleryAppModel.progressProperty);
-		setBottom(progressBar);
+	    Label label = new Label("  Images provided courtesy of iTunes");
+	    
+	    hb.getChildren().addAll(progressBar, label);
+	    
+		setBottom(hb);
 	}
 }
