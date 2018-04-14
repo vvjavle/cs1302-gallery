@@ -55,6 +55,7 @@ public class GalleryAppController
     
 	private boolean isPlaying = false;
 	private Timeline timeline = null;
+	//Controller holds reference to Model of MVC (Model View Controller)
 	public GalleryAppModel galleryAppModel = new GalleryAppModel();
 	private String[] results = null;
 	
