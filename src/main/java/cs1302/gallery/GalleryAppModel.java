@@ -36,7 +36,7 @@ public class GalleryAppModel
     /**
      * Returns an urlList property itself containing observable URLs list
      * 
-     * @return
+     * @return returns urlList property
      */
     public ListProperty<String> urlListProperty() 
     {
@@ -46,7 +46,7 @@ public class GalleryAppModel
     /**
      * Returns queryFieldProperty itself queryfield text string
      * 
-     * @return
+     * @return returns queryText
      */
     public StringProperty queryFieldProperty() 
     {
@@ -56,7 +56,7 @@ public class GalleryAppModel
     /**
      * Returns queryField text string
      * 
-     * @return
+     * @return returns query field text string
      */
     public final String getQueryText() 
     {
@@ -74,6 +74,7 @@ public class GalleryAppModel
     }
     
     /**
+     * Sets the progress property value
      * 
      * @param propertyValue
      */
